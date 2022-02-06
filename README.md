@@ -11,13 +11,13 @@ yarn add ethers hardhat @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclab
 yarn add -D tailwindcss@latest postcss@latest autoprefixer@latest
 ```
 
-# Start(<Dev>)
+# Start(Dev)
 
 ```shell
 yarn dev
 ```
 
-# Start(<Production>)
+# Start(Production)
 
 ```shell
 yarn build
