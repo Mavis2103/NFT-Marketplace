@@ -10,3 +10,4 @@ artifacts
 node_modules
 .env.local
 .next
+/.secret

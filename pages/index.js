@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-
+import Home from "./home";
 const index = props => {
-  return <div>Index</div>;
+  return (
+    <div>
+      <Home />
+    </div>
+  );
 };
 
 index.propTypes = {};

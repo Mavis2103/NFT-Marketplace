@@ -1,10 +1,10 @@
 {
-  "include": ["./src/**/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "pages/*": ["./pages/*"]
     }
   },
+  "include": ["."],
   "exclude": ["node_modules"]
 }
