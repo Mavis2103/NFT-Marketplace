@@ -1,6 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
 const fs = require("fs");
-const privateKey = fs.readFileSync(".secret").toString().trim();
+// const privateKey = fs.readFileSync(".secret").toString().trim();
+require("dotenv").config({ path: __dirname + "/.env" });
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -25,7 +26,7 @@ module.exports = {
     },
     mumbai: {
       url: "https://rpc-mumbai.maticvigil.com",
-      accounts: [privateKey]
+      accounts: [process.env.PRIVATE_KEY_MUMBAI]
     }
   },
   solidity: {
