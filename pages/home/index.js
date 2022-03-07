@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { ethers } from "ethers";
-import NFT from "../../artifacts/contracts/NFT.sol/NFT.json";
 import axios from "axios";
 import { useContract, useContractSigner } from "hooks";
 
