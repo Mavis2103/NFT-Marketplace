@@ -8,6 +8,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dicebear/adventurer": "^4.10.2",
+    "@dicebear/avatars": "^4.10.2",
     "@headlessui/react": "^1.4.3",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.2",
