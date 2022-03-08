@@ -1,4 +1,4 @@
-import { Header } from "containers";
+import { Header, Footer } from "containers";
 import React from "react";
 
 import "../styles/globals.css";
@@ -8,7 +8,7 @@ const Init = ({ Component, Props }) => {
     <div>
       <Header />
       <Component {...Props} />
-      Footer
+      <Footer />
     </div>
   );
 };

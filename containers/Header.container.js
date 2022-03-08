@@ -6,7 +6,7 @@ import * as style from "@dicebear/adventurer";
 
 import { useContractSigner } from "hooks";
 
-const Header = props => {
+const Header = (props) => {
   const [avatar, setAvatar] = useState();
   const { contract, info, onConnect } = useContractSigner();
   const handleConnectWallet = () => {
@@ -14,7 +14,7 @@ const Header = props => {
   };
   useEffect(() => {
     let svg = createAvatar(style, {
-      seed: info?.address ?? "default"
+      seed: info?.address ?? "default",
       // ... and other options
     });
     const blob = new Blob([svg], { type: "image/svg+xml" });
@@ -38,13 +38,17 @@ const Header = props => {
         </Link>
       </div>
       <div className="flex-none gap-2">
-        <div className="form-control mr-32">
-          <input type="text" placeholder="Search" className="input input-bordered w-96" />
-        </div>
-
+        <div className="form-control">
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-bordered"
+          />
         {info?.address ? (
           <>
-            <p className="text-ellipsis overflow-hidden w-96 mx-5">{info?.address}</p>
+            <p className="text-ellipsis overflow-hidden w-36 mx-5">
+              {info?.address}
+            </p>
             <div className="dropdown dropdown-end">
               <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
