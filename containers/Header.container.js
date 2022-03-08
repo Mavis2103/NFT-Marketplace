@@ -24,10 +24,18 @@ const Header = (props) => {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">Home</a>
-        <a className="btn btn-ghost normal-case text-xl">Sell NFT</a>
-        <a className="btn btn-ghost normal-case text-xl">Buy NFT</a>
-        <a className="btn btn-ghost normal-case text-xl">About</a>
+        <Link href='/home'>
+          <a className="btn btn-ghost normal-case text-xl">Home</a>
+        </Link>
+        <Link href='/explore'>
+          <a className="btn btn-ghost normal-case text-xl">Explore</a>
+        </Link>
+        <Link href='/create'>
+          <a className="btn btn-ghost normal-case text-xl">Create</a>
+        </Link>
+        <Link href='/about'>
+          <a className="btn btn-ghost normal-case text-xl">About</a>
+        </Link>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
@@ -36,8 +44,6 @@ const Header = (props) => {
             placeholder="Search"
             className="input input-bordered"
           />
-        </div>
-
         {info?.address ? (
           <>
             <p className="text-ellipsis overflow-hidden w-36 mx-5">
