@@ -37,10 +37,6 @@ export default function id() {
     const timerComponents = [];
 
     Object.keys(timeLeft).forEach((interval) => {
-        if (!timeLeft[interval]) {
-            return;
-        }
-
         timerComponents.push(
             <div className="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
                 <span className="font-mono text-5xl w-14">
