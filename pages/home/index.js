@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from 'next/link'
 import PropTypes from "prop-types";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -43,7 +44,7 @@ const Home = props => {
   return (
     <main className="container mx-auto my-10">
       <div className="grid grid-cols-4 gap-4">
-        {Array(10)
+        {Array(8)
           .fill({
             img: "https://api.lorem.space/image/shoes?w=400&h=225",
             name: "Shoes!",
@@ -51,9 +52,13 @@ const Home = props => {
           })
           .map((i, index) => (
             <div key={index} className="card card-compact bg-base-100 shadow-xl">
+              <Link 
+                href = {`/detail/${index}`}
+              >
               <figure>
                 <img src={i.img} alt="Shoes" />
               </figure>
+              </Link>
               <div className="card-body">
                 <h2 className="card-title">{i.name}</h2>
                 <p>{i.description}</p>
