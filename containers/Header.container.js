@@ -44,6 +44,7 @@ const Header = (props) => {
             placeholder="Search"
             className="input input-bordered"
           />
+          </div>
         {info?.address ? (
           <>
             <p className="text-ellipsis overflow-hidden w-36 mx-5">
