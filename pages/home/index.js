@@ -7,67 +7,90 @@ import { useContract, useContractSigner } from "hooks";
 
 const Home = props => {
   const contract = useContract();
-
+  const { contract: contractSigner } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  /**
+   * The function loads the NFTs from the contract and then uses the tokenURI function to get the
+   * metadata from the tokenURI and then sets the state of the NFTs to the items array.
+   */
+  async function loadNFTs() {
+    // Array Items
+    try {
+      const data = await contract.fetchMarketItems();
+      const items = await Promise.all(
+        data?.map(async i => {
+          const tokenUri = await contract.tokenURI(i.tokenId);
+          const meta = await axios.get(tokenUri);
+          let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+          let item = {
+            price,
+            tokenId: i.tokenId.toNumber(),
+            seller: i.seller,
+            owner: i.owner,
+            image: meta.data.image,
+            name: meta.data.name,
+            description: meta.data.description
+          };
+          return item;
+        })
+      );
+      setNfts(items);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
-    (async () => {
-      // Array Items
-      try {
-        const data = await contract.fetchMarketItems();
-        const items = await Promise.all(
-          data?.map(async i => {
-            console.log(i);
-            const tokenUri = await contract.tokenURI(i.tokenId);
-            const meta = await axios.get(tokenUri);
-            let price = ethers.utils.formatUnits(i.price.toString(), "ether");
-            let item = {
-              price,
-              tokenId: i.tokenId.toNumber(),
-              seller: i.seller,
-              owner: i.owner,
-              image: meta.data.image,
-              name: meta.data.name,
-              description: meta.data.description
-            };
-            return item;
-          })
-        );
-        setNfts(items);
-      } catch (error) {
-        // console.log(error);
-      }
-    })();
-  }, []);
+    loadNFTs();
+  }, [contract]);
+
+  /**
+   * It takes an NFT as an argument, converts the price to wei, and then calls the createMarketSale
+   * function on the contract
+   */
+  const buyNFT = async nft => {
+    const price = ethers.utils.parseUnits(nft.price, "ether");
+    const transaction = await contractSigner.createMarketSale(nft.tokenId, {
+      value: price
+    });
+    await transaction.wait();
+    loadNFTs();
+  };
 
   return (
     <main className="container mx-auto my-10">
       <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
-        {Array(8)
-          .fill({
-            img: "https://api.lorem.space/image/shoes?w=400&h=225",
-            name: "Shoes!",
-            description: "If a dog chews shoes whose shoes does he choose?"
-          })
-          .map((i, index) => (
-            <div
-              key={index}
-              className="card card-compact bg-base-100 shadow-xl md:mb-10">
-              <Link href={`/detail/${index}`}>
-                <div>
-                  <img src={i.img} alt="Shoes" className="w-full md:w-full" />
-                </div>
-              </Link>
-              <div className="card-body">
-                <h2 className="card-title">{i.name}</h2>
-                <p>{i.description}</p>
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary">Buy Now</button>
-                </div>
+        {nfts?.map((nft, index) => (
+          <div
+            key={nft.tokenId}
+            className="card card-compact bg-base-100 shadow-xl md:mb-10">
+            <Link
+              href={{
+                pathname: `/detail/${index}`,
+                query: nft
+              }}>
+              <div>
+                <img
+                  src={nft.image}
+                  alt="Shoes"
+                  className="w-full md:w-full h-40 object-contain"
+                />
+              </div>
+            </Link>
+            <div className="card-body">
+              <h2 className="card-title">{nft.name}</h2>
+              <p>{nft.description}</p>
+              <div className="card-actions justify-end items-center">
+                <div className="text-2xl">{nft.price}</div>
+                <button className="btn btn-primary" onClick={() => buyNFT(nft)}>
+                  Buy Now
+                </button>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </main>
   );

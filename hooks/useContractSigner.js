@@ -15,12 +15,19 @@ export const useContractSigner = () => {
 
   async function connection() {
     try {
-      const web3Modal = new Web3Modal();
+      const web3Modal = new Web3Modal({
+        network: "testnet",
+        cacheProvider: true
+      });
       const connection = await web3Modal.connect();
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = provider?.getSigner();
       // const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/5NPo0o79JPsJ_QVdMWqiV9icfS8QH_Rq");
-      const ct = new ethers.Contract(process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS, NFT.abi, signer);
+      const ct = new ethers.Contract(
+        process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS,
+        NFT.abi,
+        signer
+      );
       setContract(ct);
       setInfo({
         address: await signer?.getAddress()
