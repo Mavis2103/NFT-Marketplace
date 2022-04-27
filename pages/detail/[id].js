@@ -64,6 +64,15 @@ export default function id() {
     // router.push()
   };
 
+  const [priceUSD, setPriceUSD] = useState()
+  
+  useEffect(() => {
+    fetch("https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC&interval=1d,30d&convert=USD&platform-currency=ETH&per-page=100&page=1")
+      .then(response => response.json())
+      .then(data => setPriceUSD(data))
+      .catch(err => console.log(err))
+  }, [])
+
   return (
     <main className="px-52 my-10">
       <div className="grid grid-cols-12">
@@ -156,12 +165,16 @@ export default function id() {
                   <span className="font-semibold text-xl">Current price</span>
                   <span className="font-bold text-3xl text-white flex flex-row  items-end">
                     <img
-                      alt="ETH"
+                      alt="MATIC"
                       className="w-8 h-7"
-                      src="https://storage.opensea.io/files/6f8e2979d428180222796ff4a33ab929.svg"></img>
+                      src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022"></img>
+//                     <img
+//                       alt="ETH"
+//                       className="w-8 h-7"
+//                       src="https://storage.opensea.io/files/6f8e2979d428180222796ff4a33ab929.svg"></img>
                     {nft?.price}
                     <span className="font-thin text-base text-slate-300 ml-3">
-                      ($75.39)
+                      {priceUSD.price * nft?.price}
                     </span>
                   </span>
                   <div className="mt-5">
