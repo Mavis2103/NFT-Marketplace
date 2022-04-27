@@ -65,9 +65,14 @@ export default function id() {
   };
 
   const [priceUSD, setPriceUSD] = useState()
-  
+
   useEffect(() => {
-    fetch("https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1")
+    fetch("https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1", {
+      mode: 'cors',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
       .then(response => response.json())
       .then(data => setPriceUSD(data))
       .catch(err => console.log(err))
