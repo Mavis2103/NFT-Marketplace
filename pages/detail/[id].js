@@ -69,8 +69,12 @@ export default function id() {
   useEffect(() => {
     fetch("https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1", {
       mode: 'cors',
+      credentials: "include",
       headers: {
-        'Access-Control-Allow-Origin': 'https://vigor.vercel.app'
+        'Access-Control-Allow-Origin': 'https://vigor.vercel.app',
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Methods': GET,
+
       }
     })
       .then(response => response.json())
@@ -175,7 +179,7 @@ export default function id() {
                       src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022"></img>
                     {nft?.price}
                     <span className="font-thin text-base text-slate-300 ml-3">
-                      `$${+(priceUSD?.price) * +(nft?.price)}`
+                      (`$${+(priceUSD?.price) * +(nft?.price)}`)
                     </span>
                   </span>
                   <div className="mt-5">
