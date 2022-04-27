@@ -18,7 +18,7 @@ export default function id() {
 
   const calculateTimeLeft = () => {
     let year = new Date().getFullYear();
-    const difference = +new Date(`2022-03-11`) - +new Date();
+    const difference = +new Date(`2022-06-20`) - +new Date();
     let timeLeft = {};
 
     if (difference >= 0) {
@@ -64,23 +64,26 @@ export default function id() {
     // router.push()
   };
 
-  const [priceUSD, setPriceUSD] = useState()
+  const [priceUSD, setPriceUSD] = useState();
 
   useEffect(() => {
-    fetch("https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1", {
-      mode: 'cors',
-      credentials: "include",
-      headers: {
-        'Access-Control-Allow-Origin': 'https://vigor.vercel.app',
-        'Access-Control-Allow-Credentials': true,
-        'Access-Control-Allow-Methods': GET,
-
+    const fetchMatic = async () => {
+      try {
+        const data = await axios.get(
+          "https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC,XRP&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1",
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            }
+          }
+        );
+        setPrice(data.data);
+      } catch (error) {
+        console.log(error);
       }
-    })
-      .then(response => response.json())
-      .then(data => setPriceUSD(data))
-      .catch(err => console.log(err))
-  }, [])
+    };
+    fetchMatic();
+  }, []);
 
   return (
     <main className="px-52 my-10">
@@ -146,7 +149,7 @@ export default function id() {
                   {nft?.name}
                 </span>
                 <span className="text-base font-thin flex flex-row">
-                  Owned by {nft?.owner}
+                  Owned by {nft?.seller}
                   <span className="ml-10 w-40 flex flex-row">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +168,7 @@ export default function id() {
               </div>
               <div className="flex flex-col w-full border-2 border-black rounded-lg mt-5">
                 <div className="px-5 py-5 bg-gray-700 rounded-lg">
-                  <div className="mb-5">Sale ends March 11, 2022</div>
+                  <div className="mb-5">Sale ends June 20, 2022</div>
                   <div className="flex flex-row gap-5 text-center">
                     {timerComponents}
                   </div>
@@ -179,7 +182,7 @@ export default function id() {
                       src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022"></img>
                     {nft?.price}
                     <span className="font-thin text-base text-slate-300 ml-3">
-                      (`$${+(priceUSD?.price) * +(nft?.price)}`)
+                      (${+priceUSD?.price * +nft?.price})
                     </span>
                   </span>
                   <div className="mt-5">
