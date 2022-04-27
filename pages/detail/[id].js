@@ -70,7 +70,7 @@ export default function id() {
     fetch("https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1", {
       mode: 'cors',
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1'
       }
     })
       .then(response => response.json())
