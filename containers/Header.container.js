@@ -6,7 +6,7 @@ import * as style from "@dicebear/adventurer";
 
 import { useContractSigner } from "hooks";
 
-const Header = (props) => {
+const Header = props => {
   const [avatar, setAvatar] = useState();
   const { contract, info, onConnect } = useContractSigner();
   const handleConnectWallet = () => {
@@ -14,7 +14,7 @@ const Header = (props) => {
   };
   useEffect(() => {
     let svg = createAvatar(style, {
-      seed: info?.address ?? "default",
+      seed: info?.address ?? "default"
       // ... and other options
     });
     const blob = new Blob([svg], { type: "image/svg+xml" });
@@ -24,16 +24,16 @@ const Header = (props) => {
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <Link href='/home'>
+        <Link href="/home">
           <a className="btn btn-ghost normal-case text-xl">Home</a>
         </Link>
-        <Link href='/explore'>
+        <Link href="/explore">
           <a className="btn btn-ghost normal-case text-xl">Explore</a>
         </Link>
-        <Link href='/create'>
+        <Link href="/create">
           <a className="btn btn-ghost normal-case text-xl">Create</a>
         </Link>
-        <Link href='/about'>
+        <Link href="/about">
           <a className="btn btn-ghost normal-case text-xl">About</a>
         </Link>
       </div>
@@ -44,7 +44,7 @@ const Header = (props) => {
             placeholder="Search"
             className="input input-bordered"
           />
-          </div>
+        </div>
         {info?.address ? (
           <>
             <p className="text-ellipsis overflow-hidden w-36 mx-5">
@@ -53,7 +53,9 @@ const Header = (props) => {
             <div className="dropdown dropdown-end">
               <label tabIndex="0" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img src={avatar} alt="" />
+                  <Link href="/profile">
+                    <img src={avatar} alt="" />
+                  </Link>
                 </div>
               </label>
               {/* <ul tabIndex="0" className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52">
