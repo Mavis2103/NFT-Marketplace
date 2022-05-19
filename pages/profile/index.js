@@ -146,7 +146,7 @@ const Profile = props => {
                       <h3>Loading...</h3>
                     ) : createdNfts.length ? (
                       createdNfts?.map((nft, index) =>
-                        nft.owner === info?.address ? (
+                        nft.owner === info?.address && (
                             <div
                               key={nft.tokenId}
                               className="card card-compact bg-base-100 shadow-xl md:mb-10">
@@ -171,12 +171,7 @@ const Profile = props => {
                                 </div>
                               </div>
                             </div>
-                        ) : (
-                          <h1 className="text-5xl font-bold mb-10">
-                            Buy some NFTs :))))))
-                          </h1>
-                        )
-                      )
+                        ))
                     ) : (
                       <h1 className="text-5xl font-bold mb-10">
                         Buy some NFTs :)
