@@ -22,6 +22,9 @@ export default function Create() {
       setState(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
   }
+  const removeImage = e => {
+    setState({ file: null });
+  };
   async function uploadIPFS(file) {
     const added = await client.add(file, (err, ipfsHash) => {
       if (err) {
@@ -90,45 +93,80 @@ export default function Create() {
                 OGG, GLB, GLTF. Max size: 100 MB
               </span>
             </label>
-            <div
-              className="hover:bg-black"
-              style={{
-                width: 800,
-                height: 200,
-                borderRadius: 10,
-                background: "#353840",
-                borderStyle: "dashed",
-                borderWidth: 3,
-                borderColor: "#fff",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position: "relative"
-              }}>
-              <label htmlFor="input">
+            {state.file ? (
+              <div
+                className="hover:bg-black"
+                style={{
+                  width: 350,
+                  height: 350,
+                  borderRadius: 10,
+                  background: "#353840",
+                  borderStyle: "dashed",
+                  borderWidth: 3,
+                  borderColor: "#fff",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "relative"
+                }}>
                 <img
                   style={{
-                    width: 80,
-                    position: "absolute",
-                    left: "45%",
-                    top: "25%"
+                    width: 350,
+                    height: 350,
+                    borderRadius: 10,
+                    objectFit: "cover",
+                    position: "relative"
                   }}
-                  src="https://icon-library.com/images/upload-icon-vector/upload-icon-vector-10.jpg"
+                  src={URL.createObjectURL(state.file)}
+                  alt="img"
                 />
-              </label>
-              <input
-                id="file"
-                type="file"
-                name="file"
+                <button
+                  style={{ position: "absolute", top: 8, right: 12 }}
+                  onClick={removeImage}>
+                  X
+                </button>
+              </div>
+            ) : (
+              <div
+                className="hover:bg-black"
                 style={{
-                  width: 800,
-                  height: 200,
-                  opacity: 0,
-                  zIndex: 100
-                }}
-                onChange={handleChange}
-              />
-            </div>
+                  width: 350,
+                  height: 350,
+                  borderRadius: 10,
+                  background: "#353840",
+                  borderStyle: "dashed",
+                  borderWidth: 3,
+                  borderColor: "#fff",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "relative"
+                }}>
+                <label htmlFor="input">
+                  <img
+                    style={{
+                      width: 80,
+                      position: "absolute",
+                      left: "39%",
+                      top: "36%"
+                    }}
+                    src="https://icon-library.com/images/upload-icon-vector/upload-icon-vector-10.jpg"
+                  />
+                </label>
+                <input
+                  id="file"
+                  type="file"
+                  name="file"
+                  style={{
+                    width: 800,
+                    height: 200,
+                    opacity: 0,
+                    zIndex: 100
+                  }}
+                  onChange={handleChange}
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col">
