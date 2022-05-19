@@ -80,10 +80,10 @@ const Profile = props => {
 
   useEffect(() => {
     if (openTab === 1) {
-      loadMyNFTs();
+      loadMyCreatedNFTs();
     }
     if (openTab === 2) {
-      loadMyCreatedNFTs();
+      loadMyNFTs();
     }
   }, [contract, openTab]);
 
