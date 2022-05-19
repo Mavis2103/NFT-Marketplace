@@ -52,6 +52,7 @@ const Profile = props => {
 
   async function loadMyCreatedNFTs() {
     // Array Items
+    setIsLoading(true);
     try {
       const data = await contract.fetchItemsListed();
       const items = await Promise.all(
@@ -72,14 +73,14 @@ const Profile = props => {
         })
       );
       setCreatedNfts(items);
-      setIsLoading(true);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
   }
 
   useEffect(() => {
-    if (openTab === 1) {
+    if (openTab === 1) { 
       loadMyCreatedNFTs();
     }
     if (openTab === 2) {
@@ -142,9 +143,9 @@ const Profile = props => {
                   className={openTab === 1 ? "block" : "hidden"}
                   id="collected">
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
-                    {isLoading && !createdNfts.length ? (
+                    {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : (
+                    ) : createdNfts.length ? (
                       createdNfts?.map((nft, index) =>
                         nft.owner === info?.address && (
                           <div
@@ -173,6 +174,10 @@ const Profile = props => {
                           </div>
                         )
                       )
+                    ) : (
+                        <h1 className="text-5xl font-bold mb-10">
+                          Buy some NFTs :)
+                        </h1>
                     )}
                   </div>
                 </div>
