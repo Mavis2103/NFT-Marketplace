@@ -145,38 +145,39 @@ const Profile = props => {
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
                     {isLoading ? (
                       <h3>Loading...</h3>
+                    ) : !createdNfts.length ? (
+                      <h1 className="text-5xl font-bold mb-10">
+                        Buy some NFTs :)
+                      </h1>
                     ) : (
-                      createdNfts?.map((nft, index) =>
-                        nft.owner === info?.address ? (
-                          <div
-                            key={nft.tokenId}
-                            className="card card-compact bg-base-100 shadow-xl md:mb-10">
-                            <Link
-                              href={{
-                                pathname: `/detail/${index}`,
-                                query: nft
-                              }}>
-                              <div>
-                                <img
-                                  src={nft.image}
-                                  alt="Shoes"
-                                  className="w-full md:w-full h-40 object-contain"
-                                />
-                              </div>
-                            </Link>
-                            <div className="card-body">
-                              <h2 className="card-title">{nft?.name}</h2>
-                              <p>{nft?.description}</p>
-                              <div className="card-actions justify-end items-center">
-                                <div className="text-2xl">{nft.price}</div>
+                      createdNfts?.map(
+                        (nft, index) =>
+                          nft.owner === info?.address && (
+                            <div
+                              key={nft.tokenId}
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              <Link
+                                href={{
+                                  pathname: `/detail/${index}`,
+                                  query: nft
+                                }}>
+                                <div>
+                                  <img
+                                    src={nft.image}
+                                    alt="Shoes"
+                                    className="w-full md:w-full h-40 object-contain"
+                                  />
+                                </div>
+                              </Link>
+                              <div className="card-body">
+                                <h2 className="card-title">{nft?.name}</h2>
+                                <p>{nft?.description}</p>
+                                <div className="card-actions justify-end items-center">
+                                  <div className="text-2xl">{nft.price}</div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ) : (
-                          <h1 className="text-5xl font-bold mb-10">
-                            Buy some NFTs :)
-                          </h1>
-                        )
+                          )
                       )
                     )}
                   </div>
@@ -185,9 +186,13 @@ const Profile = props => {
                   className={openTab === 2 ? "block" : "hidden"}
                   id="created">
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
-                    {isLoading && !nfts.length ? (
+                    {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : nfts.length ? (
+                    ) : !nfts.length ? (
+                      <h1 className="text-5xl font-bold mb-10">
+                        Create some NFTs :)
+                      </h1>
+                    ) : (
                       nfts?.map((nft, index) => (
                         <div
                           key={nft.tokenId}
@@ -211,10 +216,6 @@ const Profile = props => {
                           </div>
                         </div>
                       ))
-                    ) : (
-                      <h1 className="text-5xl font-bold mb-10">
-                        Create some NFTs :)
-                      </h1>
                     )}
                   </div>
                 </div>
