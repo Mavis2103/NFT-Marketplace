@@ -116,7 +116,7 @@ export default function id() {
               </div>
               <div className="collapse-content">
                 <p className="font-thin text-base pt-5">
-                  Created by {nft?.seller}
+                  Created by {nft?.seller === '0x0000000000000000000000000000000000000000' ? nft?.owner : nft?.seller}
                 </p>
               </div>
             </div>
@@ -149,7 +149,7 @@ export default function id() {
                   {nft?.name}
                 </span>
                 <span className="text-base font-thin flex flex-row">
-                  Owned by {nft?.seller}
+                  Owned by {nft?.seller === '0x0000000000000000000000000000000000000000' ? nft?.owner : nft?.seller}
                   <span className="ml-10 w-40 flex flex-row">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

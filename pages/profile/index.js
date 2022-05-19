@@ -11,7 +11,7 @@ import NFTMarketplace from "../../artifacts/contracts/NFT.sol/NFT.json";
 
 const Profile = props => {
   const contract = useContract();
-  const { contract: contractSigner } = useContractSigner();
+  const { contract: contractSigner, info, onConnect } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [createdNfts, setCreatedNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +24,7 @@ const Profile = props => {
    */
   async function loadMyNFTs() {
     // Array Items
+    setIsLoading(true);
     try {
       const data = await contract.fetchMyNFTs();
       const items = await Promise.all(
@@ -44,7 +45,7 @@ const Profile = props => {
         })
       );
       setNfts(items);
-      setIsLoading(true);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -52,6 +53,7 @@ const Profile = props => {
 
   async function loadMyCreatedNFTs() {
     // Array Items
+    setIsLoading(true);
     try {
       const data = await contract.fetchItemsListed();
       const items = await Promise.all(
@@ -72,7 +74,7 @@ const Profile = props => {
         })
       );
       setCreatedNfts(items);
-      setIsLoading(true);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -80,10 +82,10 @@ const Profile = props => {
 
   useEffect(() => {
     if (openTab === 1) {
-      loadMyNFTs();
+      loadMyCreatedNFTs();
     }
     if (openTab === 2) {
-      loadMyCreatedNFTs();
+      loadMyNFTs();
     }
   }, [contract, openTab]);
 
@@ -142,36 +144,42 @@ const Profile = props => {
                   className={openTab === 1 ? "block" : "hidden"}
                   id="collected">
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
-                    {isLoading && !createdNfts.length ? (
+                    {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : createdNfts.length ? (
-                      createdNfts?.map((nft, index) => (
-                        <div
-                          key={nft.tokenId}
-                          className="card card-compact bg-base-100 shadow-xl md:mb-10">
-                          <Link
-                            href={{
-                              pathname: `/detail/${index}`,
-                              query: nft
-                            }}>
-                            <div>
-                              <img
-                                src={nft.image}
-                                alt="Shoes"
-                                className="w-full md:w-full h-40 object-contain"
-                              />
-                            </div>
-                          </Link>
-                          <div className="card-body">
-                            <h2 className="card-title">{nft?.name}</h2>
-                            <p>{nft?.description}</p>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
+                    ) : !createdNfts.length ? (
                       <h1 className="text-5xl font-bold mb-10">
                         Buy some NFTs :)
                       </h1>
+                    ) : (
+                      createdNfts?.map(
+                        (nft, index) =>
+                          nft.owner === info?.address && (
+                            <div
+                              key={nft.tokenId}
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              <Link
+                                href={{
+                                  pathname: `/detail/${index}`,
+                                  query: nft
+                                }}>
+                                <div>
+                                  <img
+                                    src={nft.image}
+                                    alt="Shoes"
+                                    className="w-full md:w-full h-40 object-contain"
+                                  />
+                                </div>
+                              </Link>
+                              <div className="card-body">
+                                <h2 className="card-title">{nft?.name}</h2>
+                                <p>{nft?.description}</p>
+                                <div className="card-actions justify-end items-center">
+                                  <div className="text-2xl">{nft.price}</div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                      )
                     )}
                   </div>
                 </div>
@@ -179,9 +187,13 @@ const Profile = props => {
                   className={openTab === 2 ? "block" : "hidden"}
                   id="created">
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
-                    {isLoading && !nfts.length ? (
+                    {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : nfts.length ? (
+                    ) : !nfts.length ? (
+                      <h1 className="text-5xl font-bold mb-10">
+                        Create some NFTs :)
+                      </h1>
+                    ) : (
                       nfts?.map((nft, index) => (
                         <div
                           key={nft.tokenId}
@@ -205,10 +217,6 @@ const Profile = props => {
                           </div>
                         </div>
                       ))
-                    ) : (
-                      <h1 className="text-5xl font-bold mb-10">
-                        Create some NFTs :)
-                      </h1>
                     )}
                   </div>
                 </div>

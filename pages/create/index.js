@@ -11,7 +11,7 @@ export default function Create() {
   const [state, setState] = useState({
     text: "",
     des: "",
-    supply: null,
+    price: null,
     file: null
   });
   const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
@@ -56,7 +56,7 @@ export default function Create() {
       const url = await upMetadataIPFS();
       let listingPrice = await contract.getListingPrice();
 
-      const price = ethers.utils.parseUnits(state.supply, "ether");
+      const price = ethers.utils.parseUnits(state.price, "ether");
 
       let transaction = await contract.createToken(url, price, {
         value: listingPrice.toString()
@@ -228,18 +228,18 @@ export default function Create() {
           <div className="flex flex-col">
             <label className="mb-2">
               <span style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
-                Supply
+                Price
               </span>
               <br />
               <span className="text-xs font-medium">
-                The number of items that can be minted. No gas cost to you!
+        
               </span>
             </label>
             <input
-              name="supply"
+              name="price"
               type="text"
               onChange={handleChange}
-              value={state.supply}
+              value={state.price}
               style={{
                 width: 800,
                 height: 40,
