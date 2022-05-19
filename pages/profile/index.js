@@ -66,15 +66,13 @@ const Profile = props => {
             owner: i.owner,
             image: meta.data.image,
             name: meta.data.name,
-            description: meta.data.description,
-            a: meta.data
+            description: meta.data.description
           };
           return item;
         })
       );
       setCreatedNfts(items);
       setIsLoading(true);
-      console.log({items})
     } catch (error) {
       console.log(error);
     }
@@ -146,38 +144,43 @@ const Profile = props => {
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
                     {isLoading && !createdNfts.length ? (
                       <h3>Loading...</h3>
-                    ) : createdNfts.length ? (
-                      createdNfts?.map((nft, index) =>
-                        nft.owner === info?.address && (
-                            <div
-                              key={nft.tokenId}
-                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
-                              <Link
-                                href={{
-                                  pathname: `/detail/${index}`,
-                                  query: nft
-                                }}>
-                                <div>
-                                  <img
-                                    src={nft.image}
-                                    alt="Shoes"
-                                    className="w-full md:w-full h-40 object-contain"
-                                  />
-                                </div>
-                              </Link>
-                              <div className="card-body">
-                                <h2 className="card-title">{nft?.name}</h2>
-                                <p>{nft?.description}</p>
-                                <div className="card-actions justify-end items-center">
-                                  <div className="text-2xl">{nft.price}</div>
-                                </div>
-                              </div>
-                            </div>
-                        ))
-                    ) : (
+                    ) : !createdNfts.length ? (
                       <h1 className="text-5xl font-bold mb-10">
                         Buy some NFTs :)
                       </h1>
+                    ) : (
+                      createdNfts?.map((nft, index) =>
+                        nft.owner === info?.address ? (
+                          <div
+                            key={nft.tokenId}
+                            className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                            <Link
+                              href={{
+                                pathname: `/detail/${index}`,
+                                query: nft
+                              }}>
+                              <div>
+                                <img
+                                  src={nft.image}
+                                  alt="Shoes"
+                                  className="w-full md:w-full h-40 object-contain"
+                                />
+                              </div>
+                            </Link>
+                            <div className="card-body">
+                              <h2 className="card-title">{nft?.name}</h2>
+                              <p>{nft?.description}</p>
+                              <div className="card-actions justify-end items-center">
+                                <div className="text-2xl">{nft.price}</div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <h1 className="text-5xl font-bold mb-10">
+                            Buy some NFTs :)))))
+                          </h1>
+                        )
+                      )
                     )}
                   </div>
                 </div>
