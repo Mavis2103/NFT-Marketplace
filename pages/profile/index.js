@@ -66,13 +66,15 @@ const Profile = props => {
             owner: i.owner,
             image: meta.data.image,
             name: meta.data.name,
-            description: meta.data.description
+            description: meta.data.description,
+            a: meta.data
           };
           return item;
         })
       );
       setCreatedNfts(items);
       setIsLoading(true);
+      console.log({items})
     } catch (error) {
       console.log(error);
     }
