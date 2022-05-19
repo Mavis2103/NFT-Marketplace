@@ -11,7 +11,7 @@ import NFTMarketplace from "../../artifacts/contracts/NFT.sol/NFT.json";
 
 const Profile = props => {
   const contract = useContract();
-  const { contract: contractSigner } = useContractSigner();
+  const { contract: contractSigner, info, onConnect } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [createdNfts, setCreatedNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -145,29 +145,40 @@ const Profile = props => {
                     {isLoading && !createdNfts.length ? (
                       <h3>Loading...</h3>
                     ) : createdNfts.length ? (
-                      createdNfts?.map((nft, index) => (
-                        <div
-                          key={nft.tokenId}
-                          className="card card-compact bg-base-100 shadow-xl md:mb-10">
-                          <Link
-                            href={{
-                              pathname: `/detail/${index}`,
-                              query: nft
-                            }}>
-                            <div>
-                              <img
-                                src={nft.image}
-                                alt="Shoes"
-                                className="w-full md:w-full h-40 object-contain"
-                              />
+                      createdNfts?.map((nft, index) =>
+                        nft.owner === info?.address ? (
+                          createdNfts?.map((nft, index) => (
+                            <div
+                              key={nft.tokenId}
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              <Link
+                                href={{
+                                  pathname: `/detail/${index}`,
+                                  query: nft
+                                }}>
+                                <div>
+                                  <img
+                                    src={nft.image}
+                                    alt="Shoes"
+                                    className="w-full md:w-full h-40 object-contain"
+                                  />
+                                </div>
+                              </Link>
+                              <div className="card-body">
+                                <h2 className="card-title">{nft?.name}</h2>
+                                <p>{nft?.description}</p>
+                                <div className="card-actions justify-end items-center">
+                                  <div className="text-2xl">{nft.price}</div>
+                                </div>
+                              </div>
                             </div>
-                          </Link>
-                          <div className="card-body">
-                            <h2 className="card-title">{nft?.name}</h2>
-                            <p>{nft?.description}</p>
-                          </div>
-                        </div>
-                      ))
+                          ))
+                        ) : (
+                          <h1 className="text-5xl font-bold mb-10">
+                            Buy some NFTs :))))))
+                          </h1>
+                        )
+                      )
                     ) : (
                       <h1 className="text-5xl font-bold mb-10">
                         Buy some NFTs :)
