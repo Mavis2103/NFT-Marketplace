@@ -49,7 +49,7 @@ const Profile = props => {
 
   useEffect(() => {
     loadMyNFTs();
-    console.log("nft" + { nfts });
+    console.log({ nfts });
   }, [contract]);
 
   /**
