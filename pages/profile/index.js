@@ -24,6 +24,7 @@ const Profile = props => {
    */
   async function loadMyNFTs() {
     // Array Items
+    setIsLoading(true);
     try {
       const data = await contract.fetchMyNFTs();
       const items = await Promise.all(
@@ -44,7 +45,7 @@ const Profile = props => {
         })
       );
       setNfts(items);
-      setIsLoading(true);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
