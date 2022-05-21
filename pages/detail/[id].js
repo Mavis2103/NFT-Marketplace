@@ -66,23 +66,23 @@ export default function id() {
 
   const [priceUSD, setPriceUSD] = useState();
 
-  const https = require('https');
+  // const https = require('https');
 
-  var options = {
-    "method": "GET",
-    "hostname": "rest.coinapi.io",
-    "path": "/v1/exchangerate/MATIC/USD",
-    "headers": {'X-CoinAPI-Key': '93987AA6-BC15-46B5-B818-E475AE736104'}
-  };
+  // var options = {
+  //   "method": "GET",
+  //   "hostname": "rest.coinapi.io",
+  //   "path": "/v1/exchangerate/MATIC/USD",
+  //   "headers": {'X-CoinAPI-Key': '93987AA6-BC15-46B5-B818-E475AE736104'}
+  // };
 
-  var request = https.request(options, function (response) {
-    var chunks = [];
-    response.on("data", function (chunk) {
-      chunks.push(chunk);
-    });
-  });
+  // var request = https.request(options, function (response) {
+  //   var chunks = [];
+  //   response.on("data", function (chunk) {
+  //     chunks.push(chunk);
+  //   });
+  // });
 
-  request.end();
+  // request.end();
 
 
   useEffect(() => {
