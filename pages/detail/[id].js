@@ -97,7 +97,7 @@ export default function id() {
             }
           }
         );
-        setPrice(data.data);
+        setPriceUSD(data.data);
       } catch (error) {
         console.log(error);
       }
