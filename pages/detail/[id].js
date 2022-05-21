@@ -75,7 +75,7 @@ export default function id() {
 
   const resellNFT = async () => {
     try {
-      const price = ethers.utils.parseUnits(nft.price, "ether");
+      const price = ethers.utils.parseUnits(state.price, "ether");
       const listingPrice = await contract.getListingPrice();
       const transaction = await contract.resellToken(nft.tokenId, price, {
         value: listingPrice.toString()
