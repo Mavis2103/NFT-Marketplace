@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useContractSigner } from "@/hooks/useContractSigner";
 import { ethers } from "ethers";
+import axios from 'axios';
 export default function id() {
   const router = useRouter();
   const nft = router.query;
