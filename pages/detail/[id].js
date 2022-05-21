@@ -9,11 +9,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useContractSigner } from "@/hooks/useContractSigner";
 import { ethers } from "ethers";
-import axios from 'axios';
+import axios from "axios";
 export default function id() {
   const router = useRouter();
   const nft = router.query;
-  const { contract } = useContractSigner();
+  const { contract, info } = useContractSigner();
 
   const now = new Date();
 
@@ -55,12 +55,37 @@ export default function id() {
     );
   });
 
+   const [state, setState] = useState({
+     price: null,
+   });
+
+    function handleChange(e) {
+        setState(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+
   const buyNFT = async () => {
     const price = ethers.utils.parseUnits(nft.price, "ether");
     const transaction = await contract.createMarketSale(nft.tokenId, {
       value: price
     });
     await transaction.wait();
+    /* Go to my nfts */
+    // router.push()
+  };
+
+  const resellNFT = async () => {
+    try {
+      const price = ethers.utils.parseUnits(state.price, "ether");
+      const listingPrice = await contract.getListingPrice();
+      const transaction = await contract.resellToken(nft.tokenId, price, {
+        value: listingPrice.toString()
+      });
+      await transaction.wait();
+      router.push("/home");
+    } catch (error) {
+      console.log(error);
+    }
+
     /* Go to my nfts */
     // router.push()
   };
@@ -85,7 +110,6 @@ export default function id() {
 
   // request.end();
 
-
   useEffect(() => {
     const fetchMatic = async () => {
       try {
@@ -93,7 +117,7 @@ export default function id() {
           "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
           {
             headers: {
-              'X-CoinAPI-Key': '93987AA6-BC15-46B5-B818-E475AE736104'
+              "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
             }
           }
         );
@@ -194,55 +218,117 @@ export default function id() {
               </div>
               <div className="flex flex-col w-full border-2 border-black rounded-lg mt-5">
                 <div className="px-5 py-5 bg-gray-700 rounded-lg">
-                  <div className="mb-5">Sale ends June 20, 2022</div>
+                  <div className="mb-5 font-semibold">
+                    Sale ends June 20, 2022
+                  </div>
                   <div className="flex flex-row gap-5 text-center">
                     {timerComponents}
                   </div>
                 </div>
                 <div className="px-5 py-5 flex flex-col">
                   <span className="font-semibold text-xl">Current price</span>
-                  <span className="font-bold text-3xl text-white flex flex-row  items-end">
+                  <span className="font-bold text-3xl text-white flex flex-row items-center">
                     <img
                       alt="MATIC"
-                      className="w-8 h-7"
+                      className="w-7 h-7 mr-2"
                       src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022"></img>
                     {nft?.price}
-                    <span className="font-thin text-base text-slate-300 ml-3">
+                    <span className="font-thin text-2xl text-slate-300 ml-3">
                       (${(+priceUSD?.rate * +nft?.price).toFixed(2)})
                     </span>
                   </span>
                   <div className="mt-5">
-                    <button className="btn btn-info btn-wide gap-2 ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                        <path
-                          fillRule="evenodd"
-                          d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                          clipRule="evenodd"
+                    {nft.owner === info?.address ? (
+                      <>
+                        <label
+                          for="resell-modal"
+                          className="btn modal-button  btn-info btn-wide gap-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span className="font-sans">Sell</span>
+                        </label>
+
+                        <input
+                          type="checkbox"
+                          id="resell-modal"
+                          className="modal-toggle"
                         />
-                      </svg>
-                      <span className="font-sans" onClick={buyNFT}>
-                        Buy now
-                      </span>
-                    </button>
-                    <button className="btn btn-wide gap-2 ml-5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path
-                          fillRule="evenodd"
-                          d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <span className="font-sans">Make offer</span>
-                    </button>
+                        <label
+                          for="resell-modal"
+                          className="modal cursor-pointer">
+                          <label className="modal-box relative" for='' > 
+                            <div>
+                              <div>
+                                <h5 className="font-bold text-lg mb-2">SELL NFT</h5>
+                                <input
+                                  name="price"
+                                  type="text"
+                                  onChange={handleChange}
+                                  placeholder='Enter your price'
+                                  value={state.price}
+                                  style={{
+                                    width: "100%",
+                                    height: 40,
+                                    marginBottom: 20,
+                                    borderRadius: 5,
+                                    padding: 5,
+                                    background: "#353840",
+                                    outline: "none"
+                                  }}
+                                />
+                                <button className="btn btn-info w-full gap-2">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                  <span
+                                    className="font-sans"
+                                    onClick={resellNFT}>
+                                    Sell
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                          </label>
+                        </label>
+                      </>
+                    ) : (
+                      <button className="btn btn-info btn-wide gap-2 ">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor">
+                          <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        <span className="font-sans" onClick={buyNFT}>
+                          Buy now
+                        </span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
