@@ -66,13 +66,18 @@ export default function id() {
   };
 
   const resellNFT = async () => {
-    const price = ethers.utils.parseUnits(nft.price, "ether");
-    const listingPrice = await contract.getListingPrice()
-    listingPrice = listingPrice.toString()
-    const transaction = await contract.resellToken(nft.tokenId, price, {
-      value: listingPrice
-    });
-    await transaction.wait();
+    try{
+        const price = ethers.utils.parseUnits(nft.price, "ether");
+        const listingPrice = await contract.getListingPrice();
+        const transaction = await contract.resellToken(nft.tokenId, price, {
+          value: listingPrice.toString()
+        });
+        await transaction.wait();
+        router.push("/home");
+    } catch (error) {
+      console.log(error);
+    }
+   
     /* Go to my nfts */
     // router.push()
   };
