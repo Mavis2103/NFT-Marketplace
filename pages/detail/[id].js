@@ -269,11 +269,12 @@ export default function id() {
                           <label className="modal-box relative" for='' > 
                             <div>
                               <div>
-                                <h5 className="font-bold text-lg">SELL NFT</h5>
+                                <h5 className="font-bold text-lg mb-2">SELL NFT</h5>
                                 <input
                                   name="price"
                                   type="text"
                                   onChange={handleChange}
+                                  placeholder='Enter your price'
                                   value={state.price}
                                   style={{
                                     width: "100%",
@@ -285,7 +286,7 @@ export default function id() {
                                     outline: "none"
                                   }}
                                 />
-                                <button className="btn btn-info btn-wide gap-2 ">
+                                <button className="btn btn-info w-full gap-2">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-5 w-5"
