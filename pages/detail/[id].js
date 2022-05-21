@@ -208,7 +208,7 @@ export default function id() {
                       src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022"></img>
                     {nft?.price}
                     <span className="font-thin text-base text-slate-300 ml-3">
-                      (${+priceUSD?.rate * +nft?.price})
+                      (${(+priceUSD?.rate * +nft?.price).toFixed(2)})
                     </span>
                   </span>
                   <div className="mt-5">
