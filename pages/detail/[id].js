@@ -240,53 +240,74 @@ export default function id() {
                   <div className="mt-5">
                     {nft.owner === info?.address ? (
                       <>
-                        <label for="resell-modal" className="btn modal-button">
-                          Sell
+                        <label
+                          for="resell-modal"
+                          className="btn modal-button  btn-info btn-wide gap-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span className="font-sans">Sell</span>
                         </label>
+
                         <input
                           type="checkbox"
                           id="resell-modal"
                           className="modal-toggle"
                         />
-                        <div className="modal">
-                          <div className="modal-box">
-                            <h5 className="font-bold text-lg">
-                              Sell NFT
-                            </h5>
-                            <input
-                              name="price"
-                              type="text"
-                              onChange={handleChange}
-                              value={state.price}
-                              style={{
-                                width: 800,
-                                height: 40,
-                                marginBottom: 20,
-                                borderRadius: 5,
-                                padding: 5,
-                                background: "#353840",
-                                outline: "none"
-                              }}
-                            />
-                            <button className="btn btn-info btn-wide gap-2 ">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                                <path
-                                  fillRule="evenodd"
-                                  d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                                  clipRule="evenodd"
+                        <label
+                          for="resell-modal"
+                          className="modal cursor-pointer">
+                          <label className="modal-box relative" for=''> 
+                            <div className="modal">
+                              <div className="modal-box">
+                                <h5 className="font-bold text-lg">SELL NFT</h5>
+                                <input
+                                  name="price"
+                                  type="text"
+                                  onChange={handleChange}
+                                  value={state.price}
+                                  style={{
+                                    width: "100%",
+                                    height: 40,
+                                    marginBottom: 20,
+                                    borderRadius: 5,
+                                    padding: 5,
+                                    background: "#353840",
+                                    outline: "none"
+                                  }}
                                 />
-                              </svg>
-                              <span className="font-sans" onClick={resellNFT}>
-                                Sell
-                              </span>
-                            </button>
-                          </div>
-                        </div>
+                                <button className="btn btn-info btn-wide gap-2 ">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5"
+                                    viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                  <span
+                                    className="font-sans"
+                                    onClick={resellNFT}>
+                                    Sell
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                          </label>
+                        </label>
                       </>
                     ) : (
                       <button className="btn btn-info btn-wide gap-2 ">
