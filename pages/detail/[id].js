@@ -266,9 +266,9 @@ export default function id() {
                         <label
                           for="resell-modal"
                           className="modal cursor-pointer">
-                          <label className="modal-box relative" for=''> 
-                            <div className="modal">
-                              <div className="modal-box">
+                          <label className="modal-box relative" for='' > 
+                            <div>
+                              <div>
                                 <h5 className="font-bold text-lg">SELL NFT</h5>
                                 <input
                                   name="price"
