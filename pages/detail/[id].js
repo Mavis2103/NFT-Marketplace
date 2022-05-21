@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useContractSigner } from "@/hooks/useContractSigner";
 import { ethers } from "ethers";
+import axios from 'axios';
 export default function id() {
   const router = useRouter();
   const nft = router.query;
@@ -66,18 +67,37 @@ export default function id() {
 
   const [priceUSD, setPriceUSD] = useState();
 
+  // const https = require('https');
+
+  // var options = {
+  //   "method": "GET",
+  //   "hostname": "rest.coinapi.io",
+  //   "path": "/v1/exchangerate/MATIC/USD",
+  //   "headers": {'X-CoinAPI-Key': '93987AA6-BC15-46B5-B818-E475AE736104'}
+  // };
+
+  // var request = https.request(options, function (response) {
+  //   var chunks = [];
+  //   response.on("data", function (chunk) {
+  //     chunks.push(chunk);
+  //   });
+  // });
+
+  // request.end();
+
+
   useEffect(() => {
     const fetchMatic = async () => {
       try {
         const data = await axios.get(
-          "https://api.nomics.com/v1/currencies/ticker?key=cb1cd017eded670e7fa38baf2a4d07548d1adc01&ids=MATIC,XRP&interval=1d,30d&convert=USD&platform-currency=MATIC&per-page=100&page=1",
+          "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
           {
             headers: {
-              "Access-Control-Allow-Origin": "*"
+              'X-CoinAPI-Key': '93987AA6-BC15-46B5-B818-E475AE736104'
             }
           }
         );
-        setPrice(data.data);
+        setPriceUSD(data.data);
       } catch (error) {
         console.log(error);
       }
@@ -100,8 +120,8 @@ export default function id() {
               </figure>
               <div className="card-body">
                 <div className="card-actions justify-end">
-                  <div className="badge badge-outline">Fashion</div>
-                  <div className="badge badge-outline">Products</div>
+                  {/* <div className="badge badge-outline">Fashion</div>
+                  <div className="badge badge-outline">Products</div> */}
                 </div>
               </div>
             </div>
@@ -116,7 +136,10 @@ export default function id() {
               </div>
               <div className="collapse-content">
                 <p className="font-thin text-base pt-5">
-                  Created by {nft?.seller === '0x0000000000000000000000000000000000000000' ? nft?.owner : nft?.seller}
+                  Created by{" "}
+                  {nft?.seller === "0x0000000000000000000000000000000000000000"
+                    ? nft?.owner
+                    : nft?.seller}
                 </p>
               </div>
             </div>
@@ -149,7 +172,10 @@ export default function id() {
                   {nft?.name}
                 </span>
                 <span className="text-base font-thin flex flex-row">
-                  Owned by {nft?.seller === '0x0000000000000000000000000000000000000000' ? nft?.owner : nft?.seller}
+                  Owned by{" "}
+                  {nft?.seller === "0x0000000000000000000000000000000000000000"
+                    ? nft?.owner
+                    : nft?.seller}
                   <span className="ml-10 w-40 flex flex-row">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -182,7 +208,7 @@ export default function id() {
                       src="https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022"></img>
                     {nft?.price}
                     <span className="font-thin text-base text-slate-300 ml-3">
-                      (${+priceUSD?.price * +nft?.price})
+                      (${(+priceUSD?.rate * +nft?.price).toFixed(2)})
                     </span>
                   </span>
                   <div className="mt-5">
