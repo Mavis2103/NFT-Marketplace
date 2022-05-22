@@ -199,14 +199,25 @@ export default function id() {
                 </span>
               </div>
               <div className="flex flex-col w-full border-2 border-black rounded-lg mt-5">
-                <div className="px-5 py-5 bg-gray-700 rounded-lg">
-                  <div className="mb-5 font-semibold">
-                    Sale ends June 20, 2022
+                {nft.owner === info?.address ? (
+                  <div className="px-5 py-5 bg-gray-700 rounded-lg hidden">
+                    <div className="mb-5 font-semibold">
+                      Sale ends June 20, 2022
+                    </div>
+                    <div className="flex flex-row gap-5 text-center">
+                      {timerComponents}
+                    </div>
                   </div>
-                  <div className="flex flex-row gap-5 text-center">
-                    {timerComponents}
+                ) : (
+                  <div className="px-5 py-5 bg-gray-700 rounded-lg">
+                    <div className="mb-5 font-semibold">
+                      Sale ends June 20, 2022
+                    </div>
+                    <div className="flex flex-row gap-5 text-center">
+                      {timerComponents}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="px-5 py-5 flex flex-col">
                   <span className="font-semibold text-xl">Current price</span>
                   <span className="font-bold text-3xl text-white flex flex-row items-center">
@@ -247,15 +258,17 @@ export default function id() {
                         <label
                           for="resell-modal"
                           className="modal cursor-pointer">
-                          <label className="modal-box relative" for='' > 
+                          <label className="modal-box relative" for="">
                             <div>
                               <div>
-                                <h5 className="font-bold text-lg mb-2">SELL NFT</h5>
+                                <h5 className="font-bold text-lg mb-2">
+                                  SELL NFT
+                                </h5>
                                 <input
                                   name="price"
                                   type="text"
                                   onChange={handleChange}
-                                  placeholder='Enter your price'
+                                  placeholder="Enter your price"
                                   value={state.price}
                                   style={{
                                     width: "100%",
@@ -292,7 +305,7 @@ export default function id() {
                         </label>
                       </>
                     ) : nft.seller === info?.address ? (
-                        <button className="btn btn-disabled btn-wide gap-2 ">
+                      <button className="btn btn-disabled btn-wide gap-2 ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5"
@@ -305,12 +318,10 @@ export default function id() {
                             clipRule="evenodd"
                           />
                         </svg>
-                        <span className="font-sans">
-                          Buy now 
-                        </span>
+                        <span className="font-sans">Buy now</span>
                       </button>
-                      ) : (
-                         <button className="btn btn-info btn-wide gap-2 ">
+                    ) : (
+                      <button className="btn btn-info btn-wide gap-2 ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5"
@@ -327,7 +338,7 @@ export default function id() {
                           Buy now
                         </span>
                       </button>
-                      ) }
+                    )}
                   </div>
                 </div>
               </div>
