@@ -90,44 +90,26 @@ export default function id() {
     // router.push()
   };
 
-  const [priceUSD, setPriceUSD] = useState();
+  const [priceUSD, setPriceUSD] = useState(0);
 
-  // const https = require('https');
-
-  // var options = {
-  //   "method": "GET",
-  //   "hostname": "rest.coinapi.io",
-  //   "path": "/v1/exchangerate/MATIC/USD",
-  //   "headers": {'X-CoinAPI-Key': '93987AA6-BC15-46B5-B818-E475AE736104'}
-  // };
-
-  // var request = https.request(options, function (response) {
-  //   var chunks = [];
-  //   response.on("data", function (chunk) {
-  //     chunks.push(chunk);
-  //   });
-  // });
-
-  // request.end();
-
-  useEffect(() => {
-    const fetchMatic = async () => {
-      try {
-        const data = await axios.get(
-          "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
-          {
-            headers: {
-              "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
-            }
-          }
-        );
-        setPriceUSD(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchMatic();
-  }, []);
+  // useEffect(() => {
+  //   const fetchMatic = async () => {
+  //     try {
+  //       const data = await axios.get(
+  //         "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
+  //         {
+  //           headers: {
+  //             "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
+  //           }
+  //         }
+  //       );
+  //       setPriceUSD(data.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchMatic();
+  // }, []);
 
   return (
     <main className="px-52 my-10">

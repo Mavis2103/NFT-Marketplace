@@ -248,7 +248,7 @@ const Profile = props => {
                     ) : (
                       sellingNfts?.map(
                         (nft, index) =>
-                          nft.owner === info?.address && (
+                          nft.seller === info?.address && (
                             <div
                               key={nft.tokenId}
                               className="card card-compact bg-base-100 shadow-xl md:mb-10">
