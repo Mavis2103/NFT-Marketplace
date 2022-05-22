@@ -90,44 +90,26 @@ export default function id() {
     // router.push()
   };
 
-  const [priceUSD, setPriceUSD] = useState();
+  const [priceUSD, setPriceUSD] = useState(0);
 
-  // const https = require('https');
-
-  // var options = {
-  //   "method": "GET",
-  //   "hostname": "rest.coinapi.io",
-  //   "path": "/v1/exchangerate/MATIC/USD",
-  //   "headers": {'X-CoinAPI-Key': '93987AA6-BC15-46B5-B818-E475AE736104'}
-  // };
-
-  // var request = https.request(options, function (response) {
-  //   var chunks = [];
-  //   response.on("data", function (chunk) {
-  //     chunks.push(chunk);
-  //   });
-  // });
-
-  // request.end();
-
-  useEffect(() => {
-    const fetchMatic = async () => {
-      try {
-        const data = await axios.get(
-          "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
-          {
-            headers: {
-              "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
-            }
-          }
-        );
-        setPriceUSD(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchMatic();
-  }, []);
+  // useEffect(() => {
+  //   const fetchMatic = async () => {
+  //     try {
+  //       const data = await axios.get(
+  //         "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
+  //         {
+  //           headers: {
+  //             "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
+  //           }
+  //         }
+  //       );
+  //       setPriceUSD(data.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchMatic();
+  // }, []);
 
   return (
     <main className="px-52 my-10">
@@ -217,14 +199,25 @@ export default function id() {
                 </span>
               </div>
               <div className="flex flex-col w-full border-2 border-black rounded-lg mt-5">
-                <div className="px-5 py-5 bg-gray-700 rounded-lg">
-                  <div className="mb-5 font-semibold">
-                    Sale ends June 20, 2022
+                {nft.owner === info?.address ? (
+                  <div className="px-5 py-5 bg-gray-700 rounded-lg hidden">
+                    <div className="mb-5 font-semibold">
+                      Sale ends June 20, 2022
+                    </div>
+                    <div className="flex flex-row gap-5 text-center">
+                      {timerComponents}
+                    </div>
                   </div>
-                  <div className="flex flex-row gap-5 text-center">
-                    {timerComponents}
+                ) : (
+                  <div className="px-5 py-5 bg-gray-700 rounded-lg">
+                    <div className="mb-5 font-semibold">
+                      Sale ends June 20, 2022
+                    </div>
+                    <div className="flex flex-row gap-5 text-center">
+                      {timerComponents}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div className="px-5 py-5 flex flex-col">
                   <span className="font-semibold text-xl">Current price</span>
                   <span className="font-bold text-3xl text-white flex flex-row items-center">
@@ -257,7 +250,6 @@ export default function id() {
                           </svg>
                           <span className="font-sans">Sell</span>
                         </label>
-
                         <input
                           type="checkbox"
                           id="resell-modal"
@@ -266,15 +258,17 @@ export default function id() {
                         <label
                           for="resell-modal"
                           className="modal cursor-pointer">
-                          <label className="modal-box relative" for='' > 
+                          <label className="modal-box relative" for="">
                             <div>
                               <div>
-                                <h5 className="font-bold text-lg mb-2">SELL NFT</h5>
+                                <h5 className="font-bold text-lg mb-2">
+                                  SELL NFT
+                                </h5>
                                 <input
                                   name="price"
                                   type="text"
                                   onChange={handleChange}
-                                  placeholder='Enter your price'
+                                  placeholder="Enter your price"
                                   value={state.price}
                                   style={{
                                     width: "100%",
@@ -310,6 +304,22 @@ export default function id() {
                           </label>
                         </label>
                       </>
+                    ) : nft.seller === info?.address ? (
+                      <button className="btn btn-disabled btn-wide gap-2 ">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          viewBox="0 0 20 20"
+                          fill="currentColor">
+                          <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        <span className="font-sans">Buy now</span>
+                      </button>
                     ) : (
                       <button className="btn btn-info btn-wide gap-2 ">
                         <svg

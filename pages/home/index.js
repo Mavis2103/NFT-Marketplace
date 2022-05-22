@@ -7,7 +7,7 @@ import { useContract, useContractSigner } from "hooks";
 
 const Home = props => {
   const contract = useContract();
-  const { contract: contractSigner } = useContractSigner();
+  const {info, contract: contractSigner } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,8 +59,17 @@ const Home = props => {
     loadNFTs();
   };
 
+  // const updateNewListingPrice = async() => {
+  //   const listingPrice = ethers.utils.parseUnits('0.0001', "ether");
+  //   const transaction = await contract.updateListingPrice({
+  //     value: listingPrice
+  //   });
+  //   await transaction.wait();
+  // }
+
   return (
     <main className="container mx-auto my-10">
+      {/* <button onClick={updateNewListingPrice}>Update</button> */}
       <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
         {nfts?.map((nft, index) => (
           <div
@@ -82,11 +91,19 @@ const Home = props => {
             <div className="card-body">
               <h2 className="card-title">{nft.name}</h2>
               <p>{nft.description}</p>
-              <div className="card-actions justify-end items-center">
+              <div className="card-actions justify-between items-center">
                 <div className="text-2xl">{nft.price}</div>
-                <button className="btn btn-primary" onClick={() => buyNFT(nft)}>
-                  Buy Now
-                </button>
+                {nft.seller === info?.address ? (
+                  <button className="btn btn-disabled">
+                    Buy Now
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-info"
+                    onClick={() => buyNFT(nft)}>
+                    Buy Now
+                  </button>
+                )}
               </div>
             </div>
           </div>
