@@ -137,7 +137,7 @@ const Profile = props => {
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 className={
-                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal" +
                   (openTab === 1
                     ? "text-white border-b-4 border-b-blue-600"
                     : "text-white bg-base-100")
@@ -155,7 +155,7 @@ const Profile = props => {
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 className={
-                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal" +
                   (openTab === 2
                     ? "text-white border-b-4 border-b-blue-600"
                     : "text-white bg-base-100")
@@ -173,7 +173,7 @@ const Profile = props => {
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 className={
-                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal" +
                   (openTab === 3
                     ? "text-white border-b-4 border-b-blue-600"
                     : "text-white bg-base-100")
@@ -198,7 +198,9 @@ const Profile = props => {
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
                     {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : !createdNfts.map(owner => owner.owner === info?.address).filter(Boolean).length ? (
+                    ) : !createdNfts
+                        .map(owner => owner.owner === info?.address)
+                        .filter(Boolean).length ? (
                       <h1 className="text-5xl font-bold mb-10">
                         Buy some NFTs :)
                       </h1>
@@ -241,7 +243,9 @@ const Profile = props => {
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
                     {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : !sellingNfts.map(seller => seller.seller === info?.address).filter(Boolean).length ? (
+                    ) : !sellingNfts
+                        .map(seller => seller.seller === info?.address)
+                        .filter(Boolean).length ? (
                       <h1 className="text-5xl font-bold mb-10">
                         Sell some NFTs :)
                       </h1>
