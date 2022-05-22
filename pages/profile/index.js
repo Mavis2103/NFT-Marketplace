@@ -83,6 +83,7 @@ const Profile = props => {
 
   async function loadMysellingNFTs() {
     // Array Items
+    setIsLoading(true);
     try {
       const data = await contract.fetchMarketItems();
       const items = await Promise.all(
@@ -103,6 +104,7 @@ const Profile = props => {
         })
       );
       setSellingNfts(items);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -122,6 +124,7 @@ const Profile = props => {
 
   console.log({ nfts });
   console.log({ createdNfts });
+  console.log({ sellingNfts });
 
   return (
     <main className="container mx-auto my-10">
