@@ -241,7 +241,7 @@ const Profile = props => {
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
                     {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : !sellingNfts.map(owner => owner.owner === info?.address).filter(Boolean).length ? (
+                    ) : !sellingNfts.map(seller => seller.seller === info?.address).filter(Boolean).length ? (
                       <h1 className="text-5xl font-bold mb-10">
                         Sell some NFTs :)
                       </h1>
