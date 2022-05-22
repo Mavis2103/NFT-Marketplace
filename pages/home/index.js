@@ -91,12 +91,10 @@ const Home = props => {
             <div className="card-body">
               <h2 className="card-title">{nft.name}</h2>
               <p>{nft.description}</p>
-              <div className="card-actions justify-end items-center">
+              <div className="card-actions justify-between items-center">
                 <div className="text-2xl">{nft.price}</div>
                 {nft.seller === info?.address ? (
-                  <button
-                    className="btn btn-disabled"
-                    >
+                  <button className="btn btn-disabled">
                     Buy Now
                   </button>
                 ) : (
