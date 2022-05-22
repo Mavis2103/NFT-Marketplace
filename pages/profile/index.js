@@ -146,7 +146,7 @@ const Profile = props => {
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
                     {isLoading ? (
                       <h3>Loading...</h3>
-                    ) : !createdNfts.length ? (
+                    ) : !createdNfts.length && nft.owner === info?.address ? (
                       <h1 className="text-5xl font-bold mb-10">
                         Buy some NFTs :)
                       </h1>
