@@ -92,24 +92,24 @@ export default function id() {
 
   const [priceUSD, setPriceUSD] = useState(0);
 
-  // useEffect(() => {
-  //   const fetchMatic = async () => {
-  //     try {
-  //       const data = await axios.get(
-  //         "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
-  //         {
-  //           headers: {
-  //             "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
-  //           }
-  //         }
-  //       );
-  //       setPriceUSD(data.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchMatic();
-  // }, []);
+  useEffect(() => {
+    const fetchMatic = async () => {
+      try {
+        const data = await axios.get(
+          "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
+          {
+            headers: {
+              "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
+            }
+          }
+        );
+        setPriceUSD(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMatic();
+  }, []);
 
   return (
     <main className="px-52 my-10">
