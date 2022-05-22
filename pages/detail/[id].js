@@ -56,7 +56,7 @@ export default function id() {
   });
 
    const [state, setState] = useState({
-     price: ethers.utils.parseUnits(nft.price, "ether"),
+     price: nft.price,
    });
 
     function handleChange(e) {
