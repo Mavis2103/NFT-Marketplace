@@ -61,7 +61,7 @@ const Home = props => {
 
   const updateListingPrice = async() => {
     const listingPrice = ethers.utils.parseUnits(0.0001, "ether");
-    const transaction = await contractSigner.updateListingPrice(listingPrice);
+    const transaction = await contractSigner.updateListingPrice(listingPrice.toString());
     await transaction.wait();
   }
 
