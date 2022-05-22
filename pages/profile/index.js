@@ -165,7 +165,7 @@ const Profile = props => {
                   setOpenTab(2);
                 }}
                 data-toggle="tab"
-                href="#collected"
+                href="#selling"
                 role="tablist">
                 Selling
               </a>
