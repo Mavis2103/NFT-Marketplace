@@ -137,10 +137,10 @@ const Profile = props => {
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 className={
-                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal" +
+                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 1
                     ? "text-white border-b-4 border-b-blue-600"
-                    : "text-white bg-base-100")
+                    : "text-gray-400 bg-base-100")
                 }
                 onClick={e => {
                   e.preventDefault();
@@ -155,10 +155,10 @@ const Profile = props => {
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 className={
-                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal" +
+                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 2
                     ? "text-white border-b-4 border-b-blue-600"
-                    : "text-white bg-base-100")
+                    : "text-gray-400 bg-base-100")
                 }
                 onClick={e => {
                   e.preventDefault();
@@ -173,10 +173,10 @@ const Profile = props => {
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
               <a
                 className={
-                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal" +
+                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
                   (openTab === 3
                     ? "text-white border-b-4 border-b-blue-600"
-                    : "text-white bg-base-100")
+                    : "text-gray-400 bg-base-100")
                 }
                 onClick={e => {
                   e.preventDefault();
