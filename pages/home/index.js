@@ -7,7 +7,7 @@ import { useContract, useContractSigner } from "hooks";
 
 const Home = props => {
   const contract = useContract();
-  const { contract: contractSigner } = useContractSigner();
+  const {info, contract: contractSigner } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -93,9 +93,19 @@ const Home = props => {
               <p>{nft.description}</p>
               <div className="card-actions justify-end items-center">
                 <div className="text-2xl">{nft.price}</div>
-                <button className="btn btn-primary" onClick={() => buyNFT(nft)}>
-                  Buy Now
-                </button>
+                {nft.seller === info?.address ? (
+                  <button
+                    className="btn btn-disabled"
+                    >
+                    Buy Now
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-info"
+                    onClick={() => buyNFT(nft)}>
+                    Buy Now
+                  </button>
+                )}
               </div>
             </div>
           </div>
