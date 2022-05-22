@@ -44,7 +44,7 @@ const Home = props => {
 
   useEffect(() => {
     loadNFTs();
-  }, [contract]);
+  }, [contract, info?.address]);
 
   /**
    * It takes an NFT as an argument, converts the price to wei, and then calls the createMarketSale
