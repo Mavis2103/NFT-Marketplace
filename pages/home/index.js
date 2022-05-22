@@ -59,8 +59,15 @@ const Home = props => {
     loadNFTs();
   };
 
+  const updateListingPrice = async() => {
+    const listingPrice = ethers.utils.parseUnits(0.0001, "ether");
+    const transaction = await contractSigner.updateListingPrice(listingPrice);
+    await transaction.wait();
+  }
+
   return (
     <main className="container mx-auto my-10">
+      <button onClick={updateListingPrice}>Update</button>
       <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
         {nfts?.map((nft, index) => (
           <div

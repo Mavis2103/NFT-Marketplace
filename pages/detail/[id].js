@@ -292,7 +292,7 @@ export default function id() {
                         </label>
                       </>
                     ) : nft.seller === info?.address ? (
-                        <button className="btn btn-disabled btn-info btn-wide gap-2 ">
+                        <button className="btn btn-disabled btn-wide gap-2 ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5"
