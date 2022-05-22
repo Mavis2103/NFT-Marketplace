@@ -14,6 +14,7 @@ const Profile = props => {
   const { contract: contractSigner, info, onConnect } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [createdNfts, setCreatedNfts] = useState([]);
+  const [sellingNfts, setSellingNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [openTab, setOpenTab] = useState(1);
 
@@ -80,11 +81,41 @@ const Profile = props => {
     }
   }
 
+  async function loadMysellingNFTs() {
+    // Array Items
+    try {
+      const data = await contract.fetchMarketItems();
+      const items = await Promise.all(
+        data?.map(async i => {
+          const tokenUri = await contract.tokenURI(i.tokenId);
+          const meta = await axios.get(tokenUri);
+          let price = ethers.utils.formatUnits(i.price.toString(), "ether");
+          let item = {
+            price,
+            tokenId: i.tokenId.toNumber(),
+            seller: i.seller,
+            owner: i.owner,
+            image: meta.data.image,
+            name: meta.data.name,
+            description: meta.data.description
+          };
+          return item;
+        })
+      );
+      setSellingNfts(items);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     if (openTab === 1) {
       loadMyCreatedNFTs();
     }
     if (openTab === 2) {
+      loadMysellingNFTs();
+    }
+    if (openTab === 3) {
       loadMyNFTs();
     }
   }, [contract, openTab]);
@@ -129,6 +160,24 @@ const Profile = props => {
                 onClick={e => {
                   e.preventDefault();
                   setOpenTab(2);
+                }}
+                data-toggle="tab"
+                href="#collected"
+                role="tablist">
+                Selling
+              </a>
+            </li>
+            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+              <a
+                className={
+                  "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                  (openTab === 3
+                    ? "text-white border-b-4 border-b-blue-600"
+                    : "text-white bg-base-100")
+                }
+                onClick={e => {
+                  e.preventDefault();
+                  setOpenTab(3);
                 }}
                 data-toggle="tab"
                 href="#created"
@@ -185,6 +234,49 @@ const Profile = props => {
                 </div>
                 <div
                   className={openTab === 2 ? "block" : "hidden"}
+                  id="collected">
+                  <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
+                    {isLoading ? (
+                      <h3>Loading...</h3>
+                    ) : !sellingNfts.map(owner => owner.owner === info?.address).filter(Boolean).length ? (
+                      <h1 className="text-5xl font-bold mb-10">
+                        Sell some NFTs :)
+                      </h1>
+                    ) : (
+                      sellingNfts?.map(
+                        (nft, index) =>
+                          nft.owner === info?.address && (
+                            <div
+                              key={nft.tokenId}
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              <Link
+                                href={{
+                                  pathname: `/detail/${index}`,
+                                  query: nft
+                                }}>
+                                <div>
+                                  <img
+                                    src={nft.image}
+                                    alt="Shoes"
+                                    className="w-full md:w-full h-40 object-contain"
+                                  />
+                                </div>
+                              </Link>
+                              <div className="card-body">
+                                <h2 className="card-title">{nft?.name}</h2>
+                                <p>{nft?.description}</p>
+                                <div className="card-actions justify-end items-center">
+                                  <div className="text-2xl">{nft.price}</div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                      )
+                    )}
+                  </div>
+                </div>
+                <div
+                  className={openTab === 3 ? "block" : "hidden"}
                   id="created">
                   <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
                     {isLoading ? (
