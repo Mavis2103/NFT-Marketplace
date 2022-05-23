@@ -12,7 +12,7 @@ contract NFT is ERC721URIStorage {
   Counters.Counter private _tokenIds;
   Counters.Counter private _itemsSold;
 
-  uint256 listingPrice = 0.0001 ether;
+  uint256 listingPrice = 0.025 ether;
   address payable owner;
 
   mapping(uint256 => MarketItem) private idToMarketItem;
