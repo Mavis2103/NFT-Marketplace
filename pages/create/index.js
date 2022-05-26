@@ -3,7 +3,10 @@ import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 
-import { useContractSigner } from "hooks";
+import { useContractSigner, useModal } from "hooks";
+import { EditSolidIcon } from "assets/icons";
+import { sharpenImageApi } from "api";
+import { ModalBox } from "components";
 
 export default function Create() {
   const router = useRouter();
@@ -12,7 +15,8 @@ export default function Create() {
     text: "",
     des: "",
     price: null,
-    file: null
+    file: null,
+    editedImg: null
   });
   const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
   function handleChange(e) {
@@ -68,6 +72,14 @@ export default function Create() {
     }
   }
 
+  // IMAGE PROCESSING
+  let urlRegex = /(https?:\/\/[^\s]+)/;
+  const applyChanges = editedImg => {
+    setState({ editedImg: editedImg });
+  };
+
+  console.log("edited create", state.editedImg);
+
   return (
     <main className="container mx-auto my-10">
       <h1 className="text-5xl font-bold mb-10">Create New Item</h1>
@@ -120,11 +132,64 @@ export default function Create() {
                   src={URL.createObjectURL(state.file)}
                   alt="img"
                 />
-                <button
-                  style={{ position: "absolute", top: 8, right: 12 }}
-                  onClick={removeImage}>
-                  X
-                </button>
+                <div className="absolute top-2 right-3">
+                  <div className="flex flex-row justify-end gap-2 w-full">
+                    <button
+                      className="btn btn-sm btn-circle"
+                      onClick={removeImage}>
+                      ✕
+                    </button>
+                    <label
+                      for="editImg-modal"
+                      className="btn modal-button btn-sm btn-circle">
+                      <EditSolidIcon />
+                    </label>
+                  </div>
+                  <ModalBox originImg={state.file} apply={applyChanges} />
+                </div>
+              </div>
+            ) : state.editedImg && urlRegex.test(state.editedImg) ? (
+              <div
+                className="hover:bg-black"
+                style={{
+                  width: 350,
+                  height: 350,
+                  borderRadius: 10,
+                  background: "#353840",
+                  borderStyle: "dashed",
+                  borderWidth: 3,
+                  borderColor: "#fff",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "relative"
+                }}>
+                <img
+                  style={{
+                    width: 350,
+                    height: 350,
+                    borderRadius: 10,
+                    objectFit: "cover",
+                    position: "relative"
+                  }}
+                  src={state.editedImg}
+                  alt="img"
+                />
+                <div className="absolute top-2 right-3">
+                  <div className="flex flex-row justify-end gap-2 w-full">
+                    <button
+                      className="btn btn-sm btn-circle"
+                      onClick={removeImage}>
+                      ✕
+                    </button>
+                    <label
+                      for="editImg-modal"
+                      className="btn modal-button btn-sm btn-circle">
+                      <EditSolidIcon />
+                    </label>
+                  </div>
+                  <ModalBox originImg={state.file} apply={applyChanges} />
+                </div>
               </div>
             ) : (
               <div
@@ -167,6 +232,50 @@ export default function Create() {
                 />
               </div>
             )}
+            {/* {state.editedImg && urlRegex.test(state.editedImg) && (
+              <div
+                className="hover:bg-black"
+                style={{
+                  width: 350,
+                  height: 350,
+                  borderRadius: 10,
+                  background: "#353840",
+                  borderStyle: "dashed",
+                  borderWidth: 3,
+                  borderColor: "#fff",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "relative"
+                }}>
+                <img
+                  style={{
+                    width: 350,
+                    height: 350,
+                    borderRadius: 10,
+                    objectFit: "cover",
+                    position: "relative"
+                  }}
+                  src={state.editedImg}
+                  alt="img"
+                />
+                <div className="absolute top-2 right-3">
+                  <div className="flex flex-row justify-end gap-2 w-full">
+                    <button
+                      className="btn btn-sm btn-circle"
+                      onClick={removeImage}>
+                      ✕
+                    </button>
+                    <label
+                      for="editImg-modal"
+                      className="btn modal-button btn-sm btn-circle">
+                      <EditSolidIcon />
+                    </label>
+                  </div>
+                  <ModalBox originImg={state.editedImg} apply={applyChanges} />
+                </div>
+              </div>
+            )} */}
           </div>
 
           <div className="flex flex-col">
@@ -231,9 +340,7 @@ export default function Create() {
                 Price
               </span>
               <br />
-              <span className="text-xs font-medium">
-        
-              </span>
+              <span className="text-xs font-medium"></span>
             </label>
             <input
               name="price"
