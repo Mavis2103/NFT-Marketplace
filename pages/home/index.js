@@ -70,9 +70,11 @@ const Home = props => {
   };
 
   return isLoading ? (
-    <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center pb-5">
-      <FontAwesomeIcon icon={faSpinner} size="10x" spin />
-    </div>
+    <main className="container mx-auto my-10">
+      <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center pb-5">
+        <FontAwesomeIcon icon={faSpinner} size="10x" spin />
+      </div>
+    </main>
   ) : (
     <main className="container mx-auto my-10">
       <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">

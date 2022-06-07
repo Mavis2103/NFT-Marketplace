@@ -86,9 +86,11 @@ export default function Create() {
   console.log("edited create", state.editedImg);
 
   return state.isLoading ? (
-    <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center pb-5">
-      <FontAwesomeIcon icon={faSpinner} size="10x" spin />
-    </div>
+    <main className="container mx-auto my-10">
+      <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center pb-5">
+        <FontAwesomeIcon icon={faSpinner} size="10x" spin />
+      </div>
+    </main>
   ) : (
     <main className="container mx-auto my-10">
       <div className="flex flex-col items-center">
