@@ -4,10 +4,12 @@ import PropTypes from "prop-types";
 import { ethers } from "ethers";
 import axios from "axios";
 import { useContract, useContractSigner } from "hooks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const Home = props => {
   const contract = useContract();
-  const {info, contract: contractSigner } = useContractSigner();
+  const { info, contract: contractSigner } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,17 +53,25 @@ const Home = props => {
    * function on the contract
    */
   const buyNFT = async nft => {
-    const price = ethers.utils.parseUnits(nft.price, "ether");
-    const transaction = await contractSigner.createMarketSale(nft.tokenId, {
-      value: price
-    });
-    await transaction.wait();
-    loadNFTs();
+    setIsLoading(true);
+    try {
+      const price = ethers.utils.parseUnits(nft.price, "ether");
+      const transaction = await contractSigner.createMarketSale(nft.tokenId, {
+        value: price
+      });
+      await transaction.wait();
+      setIsLoading(false);
+      loadNFTs();
+    } catch (error) {
+      console.log(err);
+    }
   };
 
-
-
-  return (
+  return isLoading ? (
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <FontAwesomeIcon icon={faSpinner} size="10x" spin />
+    </div>
+  ) : (
     <main className="container mx-auto my-10">
       <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
         {nfts?.map((nft, index) => (
@@ -87,13 +97,9 @@ const Home = props => {
               <div className="card-actions justify-between items-center">
                 <div className="text-2xl">{nft.price}</div>
                 {nft.seller === info?.address ? (
-                  <button className="btn btn-disabled">
-                    Buy Now
-                  </button>
+                  <button className="btn btn-disabled">Buy Now</button>
                 ) : (
-                  <button
-                    className="btn btn-info"
-                    onClick={() => buyNFT(nft)}>
+                  <button className="btn btn-info" onClick={() => buyNFT(nft)}>
                     Buy Now
                   </button>
                 )}

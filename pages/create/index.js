@@ -7,6 +7,8 @@ import { useContractSigner, useModal } from "hooks";
 import { EditSolidIcon } from "assets/icons";
 import { sharpenImageApi } from "api";
 import { ModalBox } from "components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function Create() {
   const router = useRouter();
@@ -16,7 +18,8 @@ export default function Create() {
     des: "",
     price: null,
     file: null,
-    editedImg: null
+    editedImg: null,
+    isLoading: false
   });
   const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
   function handleChange(e) {
@@ -55,6 +58,7 @@ export default function Create() {
   }
 
   async function handleSubmit(e) {
+    setState({ isLoading: true });
     try {
       e.preventDefault();
       const url = await upMetadataIPFS();
@@ -66,6 +70,7 @@ export default function Create() {
         value: listingPrice.toString()
       });
       await transaction.wait();
+      setState({ isLoading: false });
       router.push("/home");
     } catch (error) {
       console.log(error);
@@ -80,7 +85,11 @@ export default function Create() {
 
   console.log("edited create", state.editedImg);
 
-  return (
+  return state.isLoading ? (
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <FontAwesomeIcon icon={faSpinner} size="10x" spin />
+    </div>
+  ) : (
     <main className="container mx-auto my-10">
       <div className="flex flex-col items-center">
         <form onSubmit={handleSubmit}>
