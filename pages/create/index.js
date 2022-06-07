@@ -86,7 +86,7 @@ export default function Create() {
   console.log("edited create", state.editedImg);
 
   return state.isLoading ? (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-400">
+    <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center pb-5">
       <FontAwesomeIcon icon={faSpinner} size="10x" spin />
     </div>
   ) : (
