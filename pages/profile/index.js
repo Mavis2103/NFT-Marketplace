@@ -52,7 +52,7 @@ const Profile = props => {
     }
   }
 
-  async function loadMyCreatedNFTs() {
+  async function loadMyCollectedNFTs() {
     // Array Items
     setIsLoading(true);
     try {
@@ -81,7 +81,7 @@ const Profile = props => {
     }
   }
 
-  async function loadMysellingNFTs() {
+  async function loadMySellingNFTs() {
     // Array Items
     setIsLoading(true);
     try {
@@ -112,10 +112,10 @@ const Profile = props => {
 
   useEffect(() => {
     if (openTab === 1) {
-      loadMyCreatedNFTs();
+      loadMyCollectedNFTs();
     }
     if (openTab === 2) {
-      loadMysellingNFTs();
+      loadMySellingNFTs();
     }
     if (openTab === 3) {
       loadMyNFTs();

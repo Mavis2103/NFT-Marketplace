@@ -27,9 +27,6 @@ const Header = props => {
         <Link href="/home">
           <a className="btn btn-ghost normal-case text-xl">Home</a>
         </Link>
-        <Link href="/explore">
-          <a className="btn btn-ghost normal-case text-xl">Explore</a>
-        </Link>
         <Link href="/create">
           <a className="btn btn-ghost normal-case text-xl">Create</a>
         </Link>

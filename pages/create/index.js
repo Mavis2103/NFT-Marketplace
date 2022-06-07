@@ -82,9 +82,9 @@ export default function Create() {
 
   return (
     <main className="container mx-auto my-10">
-      <h1 className="text-5xl font-bold mb-10">Create New Item</h1>
       <div className="flex flex-col items-center">
         <form onSubmit={handleSubmit}>
+          <h1 className="text-5xl font-bold mb-10">Create New Item</h1>
           <label className="mb-2">
             <span
               className="before:content-['*'] before:ml-0.5 before:text-red-500"
@@ -97,12 +97,11 @@ export default function Create() {
               <span
                 className="after:content-['*'] after:ml-0.5 after:text-red-500"
                 style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
-                Image, Video, Audio, or 3D Model
+                Image
               </span>
               <br />
               <span className="text-xs font-medium">
-                File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV,
-                OGG, GLB, GLTF. Max size: 100 MB
+                File types supported: JPG, PNG, GIF, SVG. Max size: 100 MB
               </span>
             </label>
             {state.file ? (
@@ -298,7 +297,7 @@ export default function Create() {
                 height: 40,
                 marginBottom: 20,
                 borderRadius: 5,
-                padding: 5,
+                padding: 12,
                 background: "#353840",
                 outline: "none",
                 fontSize: 16
@@ -327,7 +326,7 @@ export default function Create() {
                 height: 200,
                 fontSize: 16,
                 borderRadius: 5,
-                padding: 5,
+                padding: 12,
                 marginBottom: 20,
                 background: "#353840",
                 outline: "none"
@@ -344,7 +343,8 @@ export default function Create() {
             </label>
             <input
               name="price"
-              type="text"
+              type="number"
+              placeholder="Enter the price"
               onChange={handleChange}
               value={state.price}
               style={{
@@ -352,7 +352,7 @@ export default function Create() {
                 height: 40,
                 marginBottom: 20,
                 borderRadius: 5,
-                padding: 5,
+                padding: 12,
                 background: "#353840",
                 outline: "none"
               }}
