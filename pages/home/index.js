@@ -19,6 +19,7 @@ const Home = props => {
    */
   async function loadNFTs() {
     // Array Items
+    setIsLoading(true);
     try {
       const data = await contract.fetchMarketItems();
       const items = await Promise.all(
@@ -39,6 +40,7 @@ const Home = props => {
         })
       );
       setNfts(items);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +70,7 @@ const Home = props => {
   };
 
   return isLoading ? (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-400">
       <FontAwesomeIcon icon={faSpinner} size="10x" spin />
     </div>
   ) : (
