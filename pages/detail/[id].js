@@ -55,13 +55,13 @@ export default function id() {
     );
   });
 
-   const [state, setState] = useState({
-     price: nft.price,
-   });
+  const [state, setState] = useState({
+    price: nft.price
+  });
 
-    function handleChange(e) {
-        setState(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    }
+  function handleChange(e) {
+    setState(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  }
 
   const buyNFT = async () => {
     const price = ethers.utils.parseUnits(nft.price, "ether");
@@ -266,7 +266,7 @@ export default function id() {
                                 </h5>
                                 <input
                                   name="price"
-                                  type="text"
+                                  type="number"
                                   onChange={handleChange}
                                   placeholder="Enter your price"
                                   value={state.price}
