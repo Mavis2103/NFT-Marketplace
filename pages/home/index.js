@@ -6,6 +6,8 @@ import axios from "axios";
 import { useContract, useContractSigner } from "hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home = props => {
   const contract = useContract();
@@ -67,6 +69,7 @@ const Home = props => {
       loadNFTs();
     } catch (error) {
       setIsButtonLoading(null);
+      toast(error.data?.message || error.message);
       console.log(error);
     }
   };
@@ -124,6 +127,7 @@ const Home = props => {
           ))}
         </div>
       )}
+      <ToastContainer />
     </main>
   );
 };

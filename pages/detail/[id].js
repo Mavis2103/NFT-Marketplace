@@ -11,6 +11,9 @@ import {
 import { useContractSigner } from "@/hooks/useContractSigner";
 import { ethers } from "ethers";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function id() {
   const router = useRouter();
   const nft = router.query;
@@ -77,6 +80,7 @@ export default function id() {
       setIsBuyBtnLoading(false);
     } catch (error) {
       setIsBuyBtnLoading(false);
+      toast(error.data?.message || error.message);
       console.log(error);
     }
     /* Go to my nfts */
@@ -96,6 +100,7 @@ export default function id() {
       router.push("/home");
     } catch (error) {
       setIsSellBtnLoading(false);
+      toast(error.data?.message || error.message);
       console.log(error);
     }
 
@@ -400,6 +405,7 @@ export default function id() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </main>
   );
 }
