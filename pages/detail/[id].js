@@ -74,7 +74,7 @@ export default function id() {
         value: price
       });
       await transaction.wait();
-      setIsBuyBtnLoading(true);
+      setIsBuyBtnLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -287,15 +287,15 @@ export default function id() {
                                     height: 40,
                                     marginBottom: 20,
                                     borderRadius: 5,
-                                    padding: 5,
+                                    padding: 12,
                                     background: "#353840",
                                     outline: "none"
                                   }}
                                 />
                                 {isSellBtnLoading ? (
-                                  <button className="btn btn-info btn-disabled opacity-50 w-full gap-3">
+                                  <button className="btn btn-info btn-disabled opacity-50 w-full gap-5">
                                     <FontAwesomeIcon icon={faSpinner} spin />
-                                    <span className="gap-2">
+                                    <span className="flex items-center gap-2">
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         className="h-5 w-5"
@@ -354,9 +354,9 @@ export default function id() {
                         <span className="font-sans">Buy now</span>
                       </button>
                     ) : isBuyBtnLoading ? (
-                      <button className="btn btn-info btn-disabled opacity-50 btn-wide gap-3">
+                      <button className="btn btn-info btn-disabled opacity-50 btn-wide gap-5">
                         <FontAwesomeIcon icon={faSpinner} spin />
-                        <span className="gap-2">
+                        <span className="flex items-center gap-2">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5"
