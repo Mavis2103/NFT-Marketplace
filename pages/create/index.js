@@ -85,13 +85,7 @@ export default function Create() {
 
   console.log("edited create", state.editedImg);
 
-  return state.isLoading ? (
-    <main className="container mx-auto my-10">
-      <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center pb-5">
-        <FontAwesomeIcon icon={faSpinner} size="10x" spin />
-      </div>
-    </main>
-  ) : (
+  return (
     <main className="container mx-auto my-10">
       <div className="flex flex-col items-center">
         <form onSubmit={handleSubmit}>
@@ -389,9 +383,16 @@ export default function Create() {
               <option value={"Polygon"}>Polygon</option>
             </select>
           </div>
-          <button className="btn btn-info font-bold " type="submit">
-            Create
-          </button>
+          {state.isLoading ? (
+            <button className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
+              <FontAwesomeIcon icon={faSpinner} spin />
+              Create
+            </button>
+          ) : (
+            <button className="btn btn-info font-bold " type="submit">
+              Create
+            </button>
+          )}
         </form>
       </div>
     </main>

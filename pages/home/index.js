@@ -12,6 +12,7 @@ const Home = props => {
   const { info, contract: contractSigner } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   /**
    * The function loads the NFTs from the contract and then uses the tokenURI function to get the
@@ -55,63 +56,70 @@ const Home = props => {
    * function on the contract
    */
   const buyNFT = async nft => {
-    setIsLoading(true);
+    setIsButtonLoading(true);
     try {
       const price = ethers.utils.parseUnits(nft.price, "ether");
       const transaction = await contractSigner.createMarketSale(nft.tokenId, {
         value: price
       });
       await transaction.wait();
-      setIsLoading(false);
+      setIsButtonLoading(false);
       loadNFTs();
     } catch (error) {
       console.log(err);
     }
   };
 
-  return isLoading ? (
+  return (
     <main className="container mx-auto my-10">
-      <div className="fixed top-0 right-0 bottom-0 left-0 z-50 flex justify-center pb-5">
-        <FontAwesomeIcon icon={faSpinner} size="10x" spin />
-      </div>
-    </main>
-  ) : (
-    <main className="container mx-auto my-10">
-      <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
-        {nfts?.map((nft, index) => (
-          <div
-            key={nft.tokenId}
-            className="card card-compact bg-base-100 shadow-xl md:mb-10">
-            <Link
-              href={{
-                pathname: `/detail/${index}`,
-                query: nft
-              }}>
-              <div>
-                <img
-                  src={nft.image}
-                  alt="Shoes"
-                  className="w-full md:w-full h-40 object-contain"
-                />
-              </div>
-            </Link>
-            <div className="card-body">
-              <h2 className="card-title">{nft.name}</h2>
-              <p>{nft.description}</p>
-              <div className="card-actions justify-between items-center">
-                <div className="text-2xl">{nft.price}</div>
-                {nft.seller === info?.address ? (
-                  <button className="btn btn-disabled">Buy Now</button>
-                ) : (
-                  <button className="btn btn-info" onClick={() => buyNFT(nft)}>
-                    Buy Now
-                  </button>
-                )}
+      {isLoading ? (
+        <div className="flex justify-center">
+          <FontAwesomeIcon icon={faSpinner} size="10x" spin />
+        </div>
+      ) : (
+        <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
+          {nfts?.map((nft, index) => (
+            <div
+              key={nft.tokenId}
+              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+              <Link
+                href={{
+                  pathname: `/detail/${index}`,
+                  query: nft
+                }}>
+                <div>
+                  <img
+                    src={nft.image}
+                    alt="Shoes"
+                    className="w-full md:w-full h-40 object-contain"
+                  />
+                </div>
+              </Link>
+              <div className="card-body">
+                <h2 className="card-title">{nft.name}</h2>
+                <p>{nft.description}</p>
+                <div className="card-actions justify-between items-center">
+                  <div className="text-2xl">{nft.price}</div>
+                  {nft.seller === info?.address ? (
+                    <button className="btn btn-disabled">Buy Now</button>
+                  ) : isButtonLoading ? (
+                    <button className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
+                      <FontAwesomeIcon icon={faSpinner} spin />
+                      Buy Now
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-info"
+                      onClick={() => buyNFT(nft)}>
+                      Buy Now
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </main>
   );
 };
