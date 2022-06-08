@@ -5,7 +5,8 @@ import {
   faArrowRotateRight,
   faArrowUpRightFromSquare,
   faShareNodes,
-  faEllipsisVertical
+  faEllipsisVertical,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 import { useContractSigner } from "@/hooks/useContractSigner";
 import { ethers } from "ethers";

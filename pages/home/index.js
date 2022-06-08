@@ -103,13 +103,16 @@ const Home = props => {
                   {nft.seller === info?.address ? (
                     <button className="btn btn-disabled">Buy Now</button>
                   ) : isButtonLoading ? (
-                    <button className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
+                    <button
+                      key={index}
+                      className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
                       <FontAwesomeIcon icon={faSpinner} spin />
                       Buy Now
                     </button>
                   ) : (
                     <button
                       className="btn btn-info"
+                      key={index}
                       onClick={() => buyNFT(nft)}>
                       Buy Now
                     </button>
