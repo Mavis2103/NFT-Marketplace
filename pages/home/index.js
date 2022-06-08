@@ -66,6 +66,7 @@ const Home = props => {
       setIsButtonLoading(false);
       loadNFTs();
     } catch (error) {
+      setIsButtonLoading(false);
       console.log(err);
     }
   };
