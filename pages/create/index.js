@@ -9,6 +9,8 @@ import { sharpenImageApi } from "api";
 import { ModalBox } from "components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Create() {
   const router = useRouter();
@@ -73,6 +75,8 @@ export default function Create() {
       setState({ isLoading: false });
       router.push("/home");
     } catch (error) {
+      setState({ isLoading: false });
+      toast(error.data?.message || error.message);
       console.log(error);
     }
   }
@@ -396,6 +400,7 @@ export default function Create() {
           )}
         </form>
       </div>
+      <ToastContainer />
     </main>
   );
 }
