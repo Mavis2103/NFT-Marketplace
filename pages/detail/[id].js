@@ -278,6 +278,7 @@ export default function id() {
                                 <input
                                   name="price"
                                   type="number"
+                                  step="any"
                                   onChange={handleChange}
                                   placeholder="Enter your price"
                                   value={state.price}

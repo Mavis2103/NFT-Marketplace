@@ -349,6 +349,7 @@ export default function Create() {
             <input
               name="price"
               type="number"
+              step="any"
               placeholder="Enter the price"
               onChange={handleChange}
               value={state.price}
