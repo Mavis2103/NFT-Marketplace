@@ -67,7 +67,7 @@ const Home = props => {
       loadNFTs();
     } catch (error) {
       setIsButtonLoading(false);
-      console.log(err);
+      console.log(error);
     }
   };
 
@@ -103,7 +103,7 @@ const Home = props => {
                   <div className="text-2xl">{nft.price}</div>
                   {nft.seller === info?.address ? (
                     <button className="btn btn-disabled">Buy Now</button>
-                  ) : isButtonLoading ? (
+                  ) : isButtonLoading && index ? (
                     <button
                       key={index}
                       className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
