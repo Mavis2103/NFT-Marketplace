@@ -76,6 +76,7 @@ export default function id() {
       await transaction.wait();
       setIsBuyBtnLoading(false);
     } catch (error) {
+      setIsBuyBtnLoading(false);
       console.log(error);
     }
     /* Go to my nfts */
@@ -94,6 +95,7 @@ export default function id() {
       setIsSellBtnLoading(false);
       router.push("/home");
     } catch (error) {
+      setIsSellBtnLoading(false);
       console.log(error);
     }
 

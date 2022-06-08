@@ -12,7 +12,7 @@ const Home = props => {
   const { info, contract: contractSigner } = useContractSigner();
   const [nfts, setNfts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(null);
 
   /**
    * The function loads the NFTs from the contract and then uses the tokenURI function to get the
@@ -55,18 +55,18 @@ const Home = props => {
    * It takes an NFT as an argument, converts the price to wei, and then calls the createMarketSale
    * function on the contract
    */
-  const buyNFT = async nft => {
-    setIsButtonLoading(true);
+  const buyNFT = async (nft, id) => {
+    setIsButtonLoading(id);
     try {
       const price = ethers.utils.parseUnits(nft.price, "ether");
       const transaction = await contractSigner.createMarketSale(nft.tokenId, {
         value: price
       });
       await transaction.wait();
-      setIsButtonLoading(false);
+      setIsButtonLoading(null);
       loadNFTs();
     } catch (error) {
-      setIsButtonLoading(false);
+      setIsButtonLoading(null);
       console.log(error);
     }
   };
@@ -103,7 +103,7 @@ const Home = props => {
                   <div className="text-2xl">{nft.price}</div>
                   {nft.seller === info?.address ? (
                     <button className="btn btn-disabled">Buy Now</button>
-                  ) : isButtonLoading && index ? (
+                  ) : isButtonLoading === nft.tokenId ? (
                     <button
                       key={index}
                       className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
@@ -114,7 +114,7 @@ const Home = props => {
                     <button
                       className="btn btn-info"
                       key={index}
-                      onClick={() => buyNFT(nft)}>
+                      onClick={() => buyNFT(nft, nft.tokenId)}>
                       Buy Now
                     </button>
                   )}
