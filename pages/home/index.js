@@ -105,7 +105,7 @@ const Home = props => {
                 <div className="card-actions justify-between items-center">
                   <div className="text-2xl">{nft.price}</div>
                   {nft.seller === info?.address ? (
-                    <button className="btn btn-disabled">Buy No</button>
+                    <button className="btn btn-disabled">Buy Now</button>
                   ) : isButtonLoading === nft.tokenId ? (
                     <button
                       key={index}
