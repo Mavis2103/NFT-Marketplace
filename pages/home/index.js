@@ -78,7 +78,7 @@ const Home = props => {
     <main className="container mx-auto my-10">
       {isLoading ? (
         <div className="flex justify-center">
-          <FontAwesomeIcon icon={faSpinner} size="10x" spin />
+          <FontAwesomeIcon icon={faSpinner} size="10x" className="fa-spinner" />
         </div>
       ) : (
         <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
@@ -110,7 +110,10 @@ const Home = props => {
                     <button
                       key={index}
                       className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
-                      <FontAwesomeIcon icon={faSpinner} spin />
+                      <FontAwesomeIcon
+                        icon={faSpinner}
+                        className="fa-spinner"
+                      />
                       Buy Now
                     </button>
                   ) : (

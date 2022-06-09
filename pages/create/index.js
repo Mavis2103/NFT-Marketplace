@@ -390,7 +390,7 @@ export default function Create() {
           </div>
           {state.isLoading ? (
             <button className="btn btn-info btn-disabled opacity-50 font-bold flex flex-row gap-2">
-              <FontAwesomeIcon icon={faSpinner} spin />
+              <FontAwesomeIcon icon={faSpinner} className="fa-spinner" />
               Create
             </button>
           ) : (

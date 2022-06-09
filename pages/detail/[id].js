@@ -301,7 +301,10 @@ export default function id() {
                                 />
                                 {isSellBtnLoading ? (
                                   <button className="btn btn-info btn-disabled opacity-50 w-full gap-5">
-                                    <FontAwesomeIcon icon={faSpinner} spin />
+                                    <FontAwesomeIcon
+                                      icon={faSpinner}
+                                      className="fa-spinner"
+                                    />
                                     <span className="flex items-center gap-2">
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -362,7 +365,10 @@ export default function id() {
                       </button>
                     ) : isBuyBtnLoading ? (
                       <button className="btn btn-info btn-disabled opacity-50 btn-wide gap-5">
-                        <FontAwesomeIcon icon={faSpinner} spin />
+                        <FontAwesomeIcon
+                          icon={faSpinner}
+                          className="fa-spinner"
+                        />
                         <span className="flex items-center gap-2">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
