@@ -110,7 +110,7 @@ export default function Create() {
               </span>
               <br />
               <span className="text-xs font-medium">
-                File types supported: JPG, PNG, GIF, SVG. Max size: 100 MB
+                File types supported: JPG, JPEG, PNG, GIF, SVG. Max size: 100 MB
               </span>
             </label>
             {state.file ? (
@@ -147,11 +147,11 @@ export default function Create() {
                       onClick={removeImage}>
                       ✕
                     </button>
-                    <label
-                      for="editImg-modal"
+                    {/* <label
+                      htmlFor="editImg-modal"
                       className="btn modal-button btn-sm btn-circle">
                       <EditSolidIcon />
-                    </label>
+                    </label> */}
                   </div>
                   <ModalBox originImg={state.file} apply={applyChanges} />
                 </div>
@@ -191,7 +191,7 @@ export default function Create() {
                       ✕
                     </button>
                     <label
-                      for="editImg-modal"
+                      htmlFor="editImg-modal"
                       className="btn modal-button btn-sm btn-circle">
                       <EditSolidIcon />
                     </label>
@@ -229,6 +229,7 @@ export default function Create() {
                 <input
                   id="file"
                   type="file"
+                  accept="image/jpeg, image/jpg, image/png, image/svg, image/gif"
                   name="file"
                   style={{
                     width: 800,
@@ -275,7 +276,7 @@ export default function Create() {
                       ✕
                     </button>
                     <label
-                      for="editImg-modal"
+                      htmlFor="editImg-modal"
                       className="btn modal-button btn-sm btn-circle">
                       <EditSolidIcon />
                     </label>
@@ -338,7 +339,8 @@ export default function Create() {
                 padding: 12,
                 marginBottom: 20,
                 background: "#353840",
-                outline: "none"
+                outline: "none",
+                resize: "none"
               }}
             />
           </div>
