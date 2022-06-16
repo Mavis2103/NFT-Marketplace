@@ -9,10 +9,12 @@ import {
   faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 import { useContractSigner } from "@/hooks/useContractSigner";
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { marketplaceAddress } from "config";
+import NFT from "../../artifacts/contracts/NFT.sol/NFT.json";
 
 export default function id() {
   const router = useRouter();
@@ -20,6 +22,8 @@ export default function id() {
   const { contract, info } = useContractSigner();
   const [isBuyBtnLoading, setIsBuyBtnLoading] = useState(false);
   const [isSellBtnLoading, setIsSellBtnLoading] = useState(false);
+  const [nftId, setNftId] = useState("");
+  const [txns, setTxns] = useState({});
 
   const now = new Date();
 
@@ -129,6 +133,71 @@ export default function id() {
     fetchMatic();
   }, []);
 
+  // const ct = new ethers.Contract(
+  //   process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS,
+  //   NFT.abi,
+  //   provider
+  // );
+  const getItemActivities = async () => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_RPC_URL
+    );
+    // const provider = new ethers.providers.EtherscanProvider();
+    const blockNumber = await provider.getBlockNumber();
+    let txs = [];
+
+    for (let i; i <= blockNumber; i++) {
+      const blockWithTransaction = await provider.getBlockWithTransactions(
+        blockNumber
+      );
+      for (let j = 0; j < blockWithTransaction.transactions?.length; j++) {
+        const txns = await provider.getTransaction(
+          blockWithTransaction[j].hash
+        );
+        if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
+          txs.push({ ...txns, timestamp: blockWithTransaction?.timestamp });
+        }
+      }
+    }
+    return txs;
+    // for (let txn of blockWithTransaction.transactions) {
+    //   const txns = await provider.getTransaction(txn.hash);
+    //   return txns;
+    // }
+    // return blockWithTransaction;
+    // const contractAddress = "0xf6f7e99c57d797215730fd5b41c86a2372bab463";
+    // const txsHistory = provider.getHistory(contractAddress);
+    // return txsHistory;
+    // console.log({ blockNumber });
+    //  const ct = new ethers.Contract(
+    //    process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS,
+    //    NFT.abi,
+    //    provider
+    //  );
+  };
+
+  // let filter = ct.filters.Transfer(
+  //   "0x43f64EC0a6f39AAa38247b55A14841A9A0D319aA",
+  //   null,
+  //   null
+  // );
+
+  // provider.on(filter, (from, to, amount, event) => {
+  //   // console.log({ from, to, amount, event });
+  // });
+
+  useEffect(() => {
+    getItemActivities()
+      .then(res => {
+        console.log({ res }, nft.tokenId);
+        // if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
+        //   setTxns(res);
+        // }
+        // setNftId(parseInt(+res.logs[1].topics[3]));
+      })
+      .catch(err => console.log({ err }));
+  }, []);
+
   return (
     <main className="px-52 my-10">
       <div className="grid grid-cols-12">
@@ -142,29 +211,33 @@ export default function id() {
                   alt="Shoes"
                 />
               </figure>
-              <div className="card-body">
-                <div className="card-actions justify-end">
-                  {/* <div className="badge badge-outline">Fashion</div>
-                  <div className="badge badge-outline">Products</div> */}
-                </div>
-              </div>
             </div>
           </div>
           <div className="flex flex-col w-full border-2 border-black rounded-lg mt-5">
+            <div className="collapse collapse-open border border-base-300 bg-base-100 rounded-lg">
+              <div className="collapse-title text-xl font-medium bg-gray-700">
+                Description
+              </div>
+              <div className="collapse-content">
+                <p className="font-thin text-base pt-5">{nft?.description}</p>
+              </div>
+            </div>
             <div
               tabindex="0"
               className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-lg">
               <input type="checkbox" className="peer" />
               <div className="collapse-title text-xl font-medium bg-gray-700">
-                {nft?.description}
+                Details
               </div>
-              <div className="collapse-content">
-                <p className="font-thin text-base pt-5">
-                  Created by{" "}
-                  {nft?.seller === "0x0000000000000000000000000000000000000000"
-                    ? nft?.owner
-                    : nft?.seller}
-                </p>
+              <div className="collapse-content flex flex-col">
+                <div className="flex justify-between items-center mt-5">
+                  <p className="font-medium text-white">Contract Address</p>
+                  <p className="font-thin text-base">{marketplaceAddress}</p>
+                </div>
+                <div className="flex justify-between items-center mt-5">
+                  <p className="font-medium text-white">Blockchain</p>
+                  <p className="font-thin text-base">Polygon</p>
+                </div>
               </div>
             </div>
           </div>
@@ -407,6 +480,42 @@ export default function id() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="mt-5">
+        <div
+          tabindex="0"
+          className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-lg">
+          <input type="checkbox" className="peer" />
+          <div className="collapse-title text-xl font-medium bg-gray-700">
+            Item Activity
+          </div>
+          <div className="collapse-content flex flex-col">
+            <div className="overflow-x-auto">
+              <table className="table w-full mt-3">
+                <thead>
+                  <tr>
+                    <th>Event</th>
+                    <th>Price</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* {txns?.map(txn => ( */}
+                  <tr>
+                    <th>1</th>
+                    <td>Cy Ganderton</td>
+                    <td>{txns.from}</td>
+                    <td>{txns.to}</td>
+                    <td>Blue</td>
+                  </tr>
+                  {/* ))} */}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

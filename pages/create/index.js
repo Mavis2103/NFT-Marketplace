@@ -26,7 +26,11 @@ export default function Create() {
   const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
   function handleChange(e) {
     if (e.target.files) {
-      setState(prev => ({ ...prev, [e.target.name]: e.target.files[0] }));
+      if (e.target.files[0].size < 10000000) {
+        setState(prev => ({ ...prev, [e.target.name]: e.target.files[0] }));
+      } else {
+        toast("File is too large!!!");
+      }
     } else {
       setState(prev => ({ ...prev, [e.target.name]: e.target.value }));
     }
@@ -110,7 +114,7 @@ export default function Create() {
               </span>
               <br />
               <span className="text-xs font-medium">
-                File types supported: JPG, JPEG, PNG, GIF, SVG. Max size: 100 MB
+                File types supported: JPG, JPEG, PNG, GIF, SVG. Max size: 10 MB
               </span>
             </label>
             {state.file ? (
@@ -137,7 +141,7 @@ export default function Create() {
                     objectFit: "cover",
                     position: "relative"
                   }}
-                  src={URL.createObjectURL(state.file)}
+                  src={URL?.createObjectURL(state.file)}
                   alt="img"
                 />
                 <div className="absolute top-2 right-3">

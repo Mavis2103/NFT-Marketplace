@@ -81,7 +81,7 @@ const Home = props => {
           <FontAwesomeIcon icon={faSpinner} size="10x" className="fa-spinner" />
         </div>
       ) : (
-        <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
+        <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col cursor-pointer">
           {nfts?.map((nft, index) => (
             <div
               key={nft.tokenId}

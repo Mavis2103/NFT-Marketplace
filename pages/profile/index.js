@@ -210,7 +210,7 @@ const Profile = props => {
                           nft.owner === info?.address && (
                             <div
                               key={nft.tokenId}
-                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10 cursor-pointer">
                               <Link
                                 href={{
                                   pathname: `/detail/${index}`,
@@ -255,7 +255,7 @@ const Profile = props => {
                           nft.seller === info?.address && (
                             <div
                               key={nft.tokenId}
-                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10 cursor-pointer">
                               <Link
                                 href={{
                                   pathname: `/detail/${index}`,
@@ -296,7 +296,7 @@ const Profile = props => {
                       nfts?.map((nft, index) => (
                         <div
                           key={nft.tokenId}
-                          className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                          className="card card-compact bg-base-100 shadow-xl md:mb-10 cursor-pointer">
                           <Link
                             href={{
                               pathname: `/detail/${index}`,
