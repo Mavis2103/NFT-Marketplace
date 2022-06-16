@@ -22,6 +22,7 @@ export default function id() {
   const { contract, info } = useContractSigner();
   const [isBuyBtnLoading, setIsBuyBtnLoading] = useState(false);
   const [isSellBtnLoading, setIsSellBtnLoading] = useState(false);
+  const [hasItemActivity, setHasItemActivity] = useState(false);
   const [nftId, setNftId] = useState("");
   const [txns, setTxns] = useState({});
 
@@ -139,22 +140,25 @@ export default function id() {
   //   provider
   // );
   const getItemActivities = async () => {
+    setHasItemActivity(true);
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.NEXT_PUBLIC_RPC_URL
     );
     // const provider = new ethers.providers.EtherscanProvider();
     const blockNumber = await provider.getBlockNumber();
-    let txs = [];
 
-    for (let i; i <= blockNumber; i++) {
-      const blockWithTransaction = await provider.getBlockWithTransactions(
-        blockNumber
-      );
+    let txs = [];
+    for (let i = 0; i <= blockNumber; i++) {
+      const blockWithTransaction = await provider.getBlockWithTransactions(i);
       for (let j = 0; j < blockWithTransaction.transactions?.length; j++) {
-        const txns = await provider.getTransaction(
-          blockWithTransaction[j].hash
+        const txns = await provider.getTransactionReceipt(
+          blockWithTransaction.transactions[j].hash
         );
-        if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
+        if (parseInt(+txns.logs[1].topics[3]) === nft.tokenId) {
+          // if (
+          //   blockWithTransaction.transactions[j].from ===
+          //   "0x43f64EC0a6f39AAa38247b55A14841A9A0D319aA"
+          // ) {
           txs.push({ ...txns, timestamp: blockWithTransaction?.timestamp });
         }
       }
@@ -165,7 +169,6 @@ export default function id() {
     //   return txns;
     // }
     // return blockWithTransaction;
-    // const contractAddress = "0xf6f7e99c57d797215730fd5b41c86a2372bab463";
     // const txsHistory = provider.getHistory(contractAddress);
     // return txsHistory;
     // console.log({ blockNumber });
@@ -176,26 +179,42 @@ export default function id() {
     //  );
   };
 
-  // let filter = ct.filters.Transfer(
-  //   "0x43f64EC0a6f39AAa38247b55A14841A9A0D319aA",
-  //   null,
-  //   null
-  // );
+  const test = () => {
+    const contractAddress = "0xf6f7e99c57d797215730fd5b41c86a2372bab463";
+    const smallContractABI = [
+      "event Transfer(address indexed from, address indexed to, uint256 value)"
+    ];
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_RPC_URL
+    );
+    const contract = new ethers.Contract(
+      contractAddress,
+      smallContractABI,
+      provider
+    );
 
-  // provider.on(filter, (from, to, amount, event) => {
-  //   // console.log({ from, to, amount, event });
-  // });
+    let filter = contract.filters.Transfer(
+      "0x43f64EC0a6f39AAa38247b55A14841A9A0D319aA",
+      null,
+      null
+    );
+    provider.on(filter, (from, to, amount, event) => {
+      console.log({ from, to, amount, event });
+    });
+  };
 
   useEffect(() => {
-    getItemActivities()
-      .then(res => {
-        console.log({ res }, nft.tokenId);
-        // if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
-        //   setTxns(res);
-        // }
-        // setNftId(parseInt(+res.logs[1].topics[3]));
-      })
-      .catch(err => console.log({ err }));
+    // getItemActivities()
+    test();
+    // .then(res => {
+    //   // setHasItemActivity(false);
+    //   console.log({ res }, nft.tokenId);
+    //   // if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
+    //   //   setTxns(res);
+    //   // }
+    //   // setNftId(parseInt(+res.logs[1].topics[3]));
+    // })
+    // .catch(err => console.log({ err }));
   }, []);
 
   return (
@@ -505,15 +524,18 @@ export default function id() {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {txns?.map(txn => ( */}
-                  <tr>
-                    <th>1</th>
-                    <td>Cy Ganderton</td>
-                    <td>{txns.from}</td>
-                    <td>{txns.to}</td>
-                    <td>Blue</td>
-                  </tr>
-                  {/* ))} */}
+                  {hasItemActivity && (
+                    // txs?.map(txn => (
+                    //   <tr>
+                    //     <th>1</th>
+                    //     <td>Cy Ganderton</td>
+                    //     <td>{txn.from}</td>
+                    //     <td>{txn.to}</td>
+                    //     <td>Blue</td>
+                    //   </tr>
+                    // ))
+                    <FontAwesomeIcon icon={faSpinner} className="fa-spinner" />
+                  )}
                 </tbody>
               </table>
             </div>

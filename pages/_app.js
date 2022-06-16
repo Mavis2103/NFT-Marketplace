@@ -6,11 +6,11 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 
 const Init = ({ Component, Props }) => {
   return (
-    <div>
-      <Header />
-      <Component {...Props} />
-      <Footer />
-    </div>
+      <div>
+        <Header />
+        <Component {...Props} />
+        <Footer />
+      </div>
   );
 };
 

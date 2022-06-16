@@ -62,25 +62,25 @@ contract NFT is ERC721URIStorage {
 
     _mint(msg.sender, newTokenId);
     _setTokenURI(newTokenId, tokenURI);
-    // createMarketItem(newTokenId, price);
+    createMarketItem(newTokenId, price);
     return newTokenId;
   }
 
-  // function createMarketItem(uint256 tokenId, uint256 price) private {
-  //   require(price > 0, "Price must be at least 1 wei");
-  //   require(msg.value == listingPrice, "Price must be equal to listing price");
+  function createMarketItem(uint256 tokenId, uint256 price) private {
+    require(price > 0, "Price must be at least 1 wei");
+    require(msg.value == listingPrice, "Price must be equal to listing price");
 
-  //   idToMarketItem[tokenId] = MarketItem(
-  //     tokenId,
-  //     payable(msg.sender),
-  //     payable(address(this)),
-  //     price,
-  //     false
-  //   );
+    idToMarketItem[tokenId] = MarketItem(
+      tokenId,
+      payable(msg.sender),
+      payable(address(this)),
+      price,
+      false
+    );
 
-  //   _transfer(msg.sender, address(this), tokenId);
-  //   emit MarketItemCreated(tokenId, msg.sender, address(this), price, false);
-  // }
+    _transfer(msg.sender, address(this), tokenId);
+    emit MarketItemCreated(tokenId, msg.sender, address(this), price, false);
+  }
 
   /* allows someone to resell a token they have purchased */
   function resellToken(uint256 tokenId, uint256 price) public payable {
