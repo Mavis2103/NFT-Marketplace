@@ -82,6 +82,7 @@ export default function id() {
       });
       await transaction.wait();
       setIsBuyBtnLoading(false);
+      router.push("/profile");
     } catch (error) {
       setIsBuyBtnLoading(false);
       toast(error.data?.message || error.message);
@@ -193,15 +194,15 @@ export default function id() {
     );
 
     let filter = contract.filters.Transfer(info?.address, null, null);
-    provider.on(filter, txn => {
+    provider.on(filter, (txn, a) => {
       // setTxns(txn)
       console.log({ txn });
     });
   };
 
   useEffect(() => {
-    // getItemActivities()
     test();
+    // getItemActivities()
     // .then(res => {
     //   // setHasItemActivity(false);
     //   console.log({ res }, nft.tokenId);
@@ -211,7 +212,7 @@ export default function id() {
     //   // setNftId(parseInt(+res.logs[1].topics[3]));
     // })
     // .catch(err => console.log({ err }));
-  }, []);
+  }, [contract]);
 
   return (
     <main className="px-52 my-10">
