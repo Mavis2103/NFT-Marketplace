@@ -23,8 +23,7 @@ export default function id() {
   const [isBuyBtnLoading, setIsBuyBtnLoading] = useState(false);
   const [isSellBtnLoading, setIsSellBtnLoading] = useState(false);
   const [hasItemActivity, setHasItemActivity] = useState(false);
-  const [nftId, setNftId] = useState("");
-  const [txns, setTxns] = useState({});
+  const [txns, setTxns] = useState();
 
   const now = new Date();
 
@@ -193,13 +192,10 @@ export default function id() {
       provider
     );
 
-    let filter = contract.filters.Transfer(
-      "0x43f64EC0a6f39AAa38247b55A14841A9A0D319aA",
-      null,
-      null
-    );
-    provider.on(filter, (from, to, amount, event) => {
-      console.log({ from, to, amount, event });
+    let filter = contract.filters.Transfer(info?.address, null, null);
+    provider.on(filter, txn => {
+      // setTxns(txn)
+      console.log({ txn });
     });
   };
 
