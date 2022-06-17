@@ -15,6 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { marketplaceAddress } from "config";
 import NFT from "../../artifacts/contracts/NFT.sol/NFT.json";
+import Link from "next/link";
 
 export default function id() {
   const router = useRouter();
@@ -200,19 +201,19 @@ export default function id() {
     });
   };
 
-  useEffect(() => {
-    test();
-    // getItemActivities()
-    // .then(res => {
-    //   // setHasItemActivity(false);
-    //   console.log({ res }, nft.tokenId);
-    //   // if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
-    //   //   setTxns(res);
-    //   // }
-    //   // setNftId(parseInt(+res.logs[1].topics[3]));
-    // })
-    // .catch(err => console.log({ err }));
-  }, [contract]);
+  // useEffect(() => {
+  //   test();
+  // getItemActivities()
+  // .then(res => {
+  //   // setHasItemActivity(false);
+  //   console.log({ res }, nft.tokenId);
+  //   // if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
+  //   //   setTxns(res);
+  //   // }
+  //   // setNftId(parseInt(+res.logs[1].topics[3]));
+  // })
+  // .catch(err => console.log({ err }));
+  // }, [contract]);
 
   return (
     <main className="px-52 my-10">
@@ -337,7 +338,7 @@ export default function id() {
                       (${(+priceUSD?.rate * +nft?.price).toFixed(2)})
                     </span>
                   </span>
-                  <div className="mt-5">
+                  <div className="mt-5 flex justify-between items-center">
                     {nft.owner === info?.address ? (
                       <>
                         <label
@@ -493,6 +494,15 @@ export default function id() {
                         </span>
                       </button>
                     )}
+                    <Link
+                      href={`https://mumbai.polygonscan.com/token/0xf6f7e99c57d797215730fd5b41c86a2372bab463?a=${nft.tokenId}`}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400">
+                        View transactions
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -500,7 +510,7 @@ export default function id() {
           </div>
         </div>
       </div>
-      <div className="mt-5">
+      {/* <div className="mt-5">
         <div
           tabindex="0"
           className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-lg">
@@ -538,7 +548,7 @@ export default function id() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <ToastContainer />
     </main>
   );
