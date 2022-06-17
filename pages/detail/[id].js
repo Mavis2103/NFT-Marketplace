@@ -216,7 +216,7 @@ export default function id() {
   // }, [contract]);
 
   return (
-    <main className="px-52 my-10">
+    <main className="xl:px-52 lg:px-44 md:px-36 my-10">
       <div className="grid grid-cols-12">
         <div className="col-span-5 mr-10 flex flex-col">
           <div className=" w-full h-full">
@@ -241,7 +241,7 @@ export default function id() {
             </div>
             <div
               tabindex="0"
-              className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-lg">
+              className="collapse collapse-open border border-base-300 bg-base-100 rounded-lg">
               <input type="checkbox" className="peer" />
               <div className="collapse-title text-xl font-medium bg-gray-700">
                 Details
@@ -249,7 +249,19 @@ export default function id() {
               <div className="collapse-content flex flex-col">
                 <div className="flex justify-between items-center mt-5">
                   <p className="font-medium text-white">Contract Address</p>
-                  <p className="font-thin text-base">{marketplaceAddress}</p>
+                  <Link href="https://mumbai.polygonscan.com/address/0xf6f7e99c57d797215730fd5b41c86a2372bab463">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 font-thin text-base text-ellipsis overflow-hidden"
+                      style={{ width: 100 }}>
+                      0xf6f7e99C57d797215730fD5B41c86A2372BAb463
+                    </a>
+                  </Link>
+                </div>
+                <div className="flex justify-between items-center mt-5">
+                  <p className="font-medium text-white">Token ID</p>
+                  <p className="font-thin text-base">{nft.tokenId}</p>
                 </div>
                 <div className="flex justify-between items-center mt-5">
                   <p className="font-medium text-white">Blockchain</p>
@@ -287,9 +299,28 @@ export default function id() {
                 </span>
                 <span className="text-base font-thin flex flex-row">
                   Owned by{" "}
-                  {nft?.seller === "0x0000000000000000000000000000000000000000"
-                    ? nft?.owner
-                    : nft?.seller}
+                  {nft?.seller ===
+                  "0x0000000000000000000000000000000000000000" ? (
+                    <Link
+                      href={`https://mumbai.polygonscan.com/address/${nft?.owner}`}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 ml-1">
+                        {nft?.owner}
+                      </a>
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`https://mumbai.polygonscan.com/address/${nft?.seller}`}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 ml-1">
+                        {nft?.seller}
+                      </a>
+                    </Link>
+                  )}
                   <span className="ml-10 w-40 flex flex-row">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

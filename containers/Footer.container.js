@@ -26,7 +26,7 @@ export default function Footer() {
   );
   return (
     <main style={{ backgroundColor: "#04111D" }} className="text-white pt-10">
-      <div className="xl:container xl:px-0 xl:mx-auto lg:container lg:px-0 lg:mx-auto md:container-fluid md:px-10 md:mx-auto sm:container-fluid sm:px-10 sm:mx-auto xs:container-fluid xs:px-10 xs:mx-auto 2xs:container-fluid 2xs:px-10 2xs:mx-auto">
+      <div className="xl:container xl:px-10 xl:mx-auto lg:container lg:px-10 lg:mx-auto md:container-fluid md:px-10 md:mx-auto sm:container-fluid sm:px-10 sm:mx-auto xs:container-fluid xs:px-10 xs:mx-auto 2xs:container-fluid 2xs:px-10 2xs:mx-auto">
         <div className="xl:flex xl:justify-between pb-10 border-b-2 border-slate-600">
           <div className="xl:flex xl:flex-col xl:items-start lg:flex lg:flex-col lg:items-center lg:mb-8 md:flex md:flex-col md:items-center md:mb-8 sm:flex sm:flex-col sm:items-center sm:mb-8 xs:flex xs:flex-col xs:items-center xs:mb-8 2xs:flex 2xs:flex-col 2xs:items-center 2xs:mb-8">
             <h3 className="font-bold text-lg mb-2">Stay in the loop</h3>

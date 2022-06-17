@@ -75,7 +75,7 @@ const Home = props => {
   };
 
   return (
-    <main className="container mx-auto my-10">
+    <main className="container xl:mx-20 lg:mx-20 my-10">
       {isLoading ? (
         <div className="flex justify-center">
           <FontAwesomeIcon icon={faSpinner} size="10x" className="fa-spinner" />
