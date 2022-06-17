@@ -28,9 +28,12 @@ export const useContractSigner = () => {
         NFT.abi,
         signer
       );
+      const balance = await provider.getBalance(signer?.getAddress());
+      const balanceFormatted = ethers.utils.formatEther(balance);
       setContract(ct);
       setInfo({
-        address: await signer?.getAddress()
+        address: await signer?.getAddress(),
+        balance: balanceFormatted
       });
     } catch (error) {
       console.log(error);
