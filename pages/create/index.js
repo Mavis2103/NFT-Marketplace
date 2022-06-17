@@ -76,10 +76,10 @@ export default function Create() {
         value: listingPrice.toString()
       });
       await transaction.wait();
-      setState({ isLoading: false });
+      setState({ text: "", des: "", price: null, isLoading: false });
       router.push("/home");
     } catch (error) {
-      setState({ isLoading: false });
+      setState({ text: "", des: "", price: null, isLoading: false });
       toast(error.data?.message || error.message);
       console.log(error);
     }
@@ -320,7 +320,9 @@ export default function Create() {
           </div>
           <div className="flex flex-col">
             <label className="mb-2">
-              <span style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
+              <span
+                className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
                 Description
               </span>
               <br />
@@ -350,7 +352,9 @@ export default function Create() {
           </div>
           <div className="flex flex-col">
             <label className="mb-2">
-              <span style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
+              <span
+                className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
                 Price
               </span>
               <br />
@@ -376,7 +380,9 @@ export default function Create() {
           </div>
           <div className="flex flex-col">
             <label className="mb-2">
-              <span style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
+              <span
+                className="after:content-['*'] after:ml-0.5 after:text-red-500"
+                style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
                 Blockchain
               </span>
             </label>
@@ -390,8 +396,8 @@ export default function Create() {
                 background: "#353840",
                 outline: "none"
               }}>
-              <option value={"Ethereum"}>Ethereum</option>
               <option value={"Polygon"}>Polygon</option>
+              <option value={"Ethereum"}>Ethereum</option>
             </select>
           </div>
           {state.isLoading ? (
