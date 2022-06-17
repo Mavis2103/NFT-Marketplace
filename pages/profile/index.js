@@ -96,7 +96,7 @@ const Profile = props => {
   console.log({ sellingNfts });
 
   return (
-    <main className="container mx-auto my-10">
+    <main className="container xl:px-20 lg:px-20 my-10">
       <h1 className="text-5xl font-bold mb-10">My NFTs</h1>
       <div className="flex flex-wrap">
         <div className="w-full">
