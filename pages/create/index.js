@@ -91,8 +91,6 @@ export default function Create() {
     setState({ editedImg: editedImg });
   };
 
-  console.log("edited create", state.editedImg);
-
   return (
     <main className="container mx-auto my-10">
       <div className="flex flex-col items-center">
