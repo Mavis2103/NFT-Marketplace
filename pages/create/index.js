@@ -76,10 +76,10 @@ export default function Create() {
         value: listingPrice.toString()
       });
       await transaction.wait();
-      setState({ text: "", des: "", price: null, isLoading: false });
+      setState({ text: "", des: "", price: "", isLoading: false });
       router.push("/home");
     } catch (error) {
-      setState({ text: "", des: "", price: null, isLoading: false });
+      setState({ text: "", des: "", price: "", isLoading: false });
       toast(error.data?.message || error.message);
       console.log(error);
     }
