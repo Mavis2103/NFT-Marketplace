@@ -5,15 +5,26 @@ import {
   faArrowRotateRight,
   faArrowUpRightFromSquare,
   faShareNodes,
-  faEllipsisVertical
+  faEllipsisVertical,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 import { useContractSigner } from "@/hooks/useContractSigner";
-import { ethers } from "ethers";
+import { ethers, providers } from "ethers";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { marketplaceAddress } from "config";
+import NFT from "../../artifacts/contracts/NFT.sol/NFT.json";
+import Link from "next/link";
+
 export default function id() {
   const router = useRouter();
   const nft = router.query;
   const { contract, info } = useContractSigner();
+  const [isBuyBtnLoading, setIsBuyBtnLoading] = useState(false);
+  const [isSellBtnLoading, setIsSellBtnLoading] = useState(false);
+  const [hasItemActivity, setHasItemActivity] = useState(false);
+  const [txns, setTxns] = useState();
 
   const now = new Date();
 
@@ -55,25 +66,35 @@ export default function id() {
     );
   });
 
-   const [state, setState] = useState({
-     price: nft.price,
-   });
+  const [state, setState] = useState({
+    price: nft.price
+  });
 
-    function handleChange(e) {
-        setState(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    }
+  function handleChange(e) {
+    setState(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  }
 
   const buyNFT = async () => {
-    const price = ethers.utils.parseUnits(nft.price, "ether");
-    const transaction = await contract.createMarketSale(nft.tokenId, {
-      value: price
-    });
-    await transaction.wait();
+    setIsBuyBtnLoading(true);
+    try {
+      const price = ethers.utils.parseUnits(nft.price, "ether");
+      const transaction = await contract.createMarketSale(nft.tokenId, {
+        value: price
+      });
+      await transaction.wait();
+      setIsBuyBtnLoading(false);
+      router.push("/profile");
+    } catch (error) {
+      setIsBuyBtnLoading(false);
+      toast(error.data?.message || error.message);
+      console.log(error);
+    }
     /* Go to my nfts */
     // router.push()
   };
 
   const resellNFT = async () => {
+    setIsSellBtnLoading(true);
     try {
       const price = ethers.utils.parseUnits(state.price, "ether");
       const listingPrice = await contract.getListingPrice();
@@ -81,8 +102,11 @@ export default function id() {
         value: listingPrice.toString()
       });
       await transaction.wait();
+      setIsSellBtnLoading(false);
       router.push("/home");
     } catch (error) {
+      setIsSellBtnLoading(false);
+      toast(error.data?.message || error.message);
       console.log(error);
     }
 
@@ -99,7 +123,7 @@ export default function id() {
           "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
           {
             headers: {
-              "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
+              "X-CoinAPI-Key": "04444A03-A581-455F-B08B-CBC1A2A57EB2"
             }
           }
         );
@@ -111,8 +135,88 @@ export default function id() {
     fetchMatic();
   }, []);
 
+  // const ct = new ethers.Contract(
+  //   process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS,
+  //   NFT.abi,
+  //   provider
+  // );
+  const getItemActivities = async () => {
+    setHasItemActivity(true);
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_RPC_URL
+    );
+    // const provider = new ethers.providers.EtherscanProvider();
+    const blockNumber = await provider.getBlockNumber();
+
+    let txs = [];
+    for (let i = 0; i <= blockNumber; i++) {
+      const blockWithTransaction = await provider.getBlockWithTransactions(i);
+      for (let j = 0; j < blockWithTransaction.transactions?.length; j++) {
+        const txns = await provider.getTransactionReceipt(
+          blockWithTransaction.transactions[j].hash
+        );
+        if (parseInt(+txns.logs[1].topics[3]) === nft.tokenId) {
+          // if (
+          //   blockWithTransaction.transactions[j].from ===
+          //   "0x43f64EC0a6f39AAa38247b55A14841A9A0D319aA"
+          // ) {
+          txs.push({ ...txns, timestamp: blockWithTransaction?.timestamp });
+        }
+      }
+    }
+    return txs;
+    // for (let txn of blockWithTransaction.transactions) {
+    //   const txns = await provider.getTransaction(txn.hash);
+    //   return txns;
+    // }
+    // return blockWithTransaction;
+    // const txsHistory = provider.getHistory(contractAddress);
+    // return txsHistory;
+    // console.log({ blockNumber });
+    //  const ct = new ethers.Contract(
+    //    process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS,
+    //    NFT.abi,
+    //    provider
+    //  );
+  };
+
+  const test = () => {
+    const contractAddress = "0xf6f7e99c57d797215730fd5b41c86a2372bab463";
+    const smallContractABI = [
+      "event Transfer(address indexed from, address indexed to, uint256 value)"
+    ];
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_RPC_URL
+    );
+    const contract = new ethers.Contract(
+      contractAddress,
+      smallContractABI,
+      provider
+    );
+
+    let filter = contract.filters.Transfer(info?.address, null, null);
+    provider.on(filter, (txn, a) => {
+      // setTxns(txn)
+      console.log({ txn });
+    });
+  };
+
+  // useEffect(() => {
+  //   test();
+  // getItemActivities()
+  // .then(res => {
+  //   // setHasItemActivity(false);
+  //   console.log({ res }, nft.tokenId);
+  //   // if (parseInt(+res.logs[1].topics[3]) === nft.tokenId) {
+  //   //   setTxns(res);
+  //   // }
+  //   // setNftId(parseInt(+res.logs[1].topics[3]));
+  // })
+  // .catch(err => console.log({ err }));
+  // }, [contract]);
+
   return (
-    <main className="px-52 my-10">
+    <main className="xl:px-52 lg:px-44 md:px-36 my-10">
       <div className="grid grid-cols-12">
         <div className="col-span-5 mr-10 flex flex-col">
           <div className=" w-full h-full">
@@ -124,29 +228,45 @@ export default function id() {
                   alt="Shoes"
                 />
               </figure>
-              <div className="card-body">
-                <div className="card-actions justify-end">
-                  {/* <div className="badge badge-outline">Fashion</div>
-                  <div className="badge badge-outline">Products</div> */}
-                </div>
-              </div>
             </div>
           </div>
           <div className="flex flex-col w-full border-2 border-black rounded-lg mt-5">
-            <div
-              tabindex="0"
-              className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-lg">
-              <input type="checkbox" className="peer" />
+            <div className="collapse collapse-open border border-base-300 bg-base-100 rounded-lg">
               <div className="collapse-title text-xl font-medium bg-gray-700">
-                {nft?.description}
+                Description
               </div>
               <div className="collapse-content">
-                <p className="font-thin text-base pt-5">
-                  Created by{" "}
-                  {nft?.seller === "0x0000000000000000000000000000000000000000"
-                    ? nft?.owner
-                    : nft?.seller}
-                </p>
+                <p className="font-thin text-base pt-5">{nft?.description}</p>
+              </div>
+            </div>
+            <div
+              tabindex="0"
+              className="collapse collapse-open border border-base-300 bg-base-100 rounded-lg">
+              <input type="checkbox" className="peer" />
+              <div className="collapse-title text-xl font-medium bg-gray-700">
+                Details
+              </div>
+              <div className="collapse-content flex flex-col">
+                <div className="flex justify-between items-center mt-5">
+                  <p className="font-medium text-white">Contract Address</p>
+                  <Link href="https://mumbai.polygonscan.com/address/0xf6f7e99c57d797215730fd5b41c86a2372bab463">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 font-thin text-base text-ellipsis overflow-hidden"
+                      style={{ width: 100 }}>
+                      0xf6f7e99C57d797215730fD5B41c86A2372BAb463
+                    </a>
+                  </Link>
+                </div>
+                <div className="flex justify-between items-center mt-5">
+                  <p className="font-medium text-white">Token ID</p>
+                  <p className="font-thin text-base">{nft.tokenId}</p>
+                </div>
+                <div className="flex justify-between items-center mt-5">
+                  <p className="font-medium text-white">Blockchain</p>
+                  <p className="font-thin text-base">Polygon</p>
+                </div>
               </div>
             </div>
           </div>
@@ -179,9 +299,28 @@ export default function id() {
                 </span>
                 <span className="text-base font-thin flex flex-row">
                   Owned by{" "}
-                  {nft?.seller === "0x0000000000000000000000000000000000000000"
-                    ? nft?.owner
-                    : nft?.seller}
+                  {nft?.seller ===
+                  "0x0000000000000000000000000000000000000000" ? (
+                    <Link
+                      href={`https://mumbai.polygonscan.com/address/${nft?.owner}`}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 ml-1">
+                        {nft?.owner}
+                      </a>
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`https://mumbai.polygonscan.com/address/${nft?.seller}`}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 ml-1">
+                        {nft?.seller}
+                      </a>
+                    </Link>
+                  )}
                   <span className="ml-10 w-40 flex flex-row">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +369,7 @@ export default function id() {
                       (${(+priceUSD?.rate * +nft?.price).toFixed(2)})
                     </span>
                   </span>
-                  <div className="mt-5">
+                  <div className="mt-5 flex justify-between items-center">
                     {nft.owner === info?.address ? (
                       <>
                         <label
@@ -266,7 +405,8 @@ export default function id() {
                                 </h5>
                                 <input
                                   name="price"
-                                  type="text"
+                                  type="number"
+                                  step="any"
                                   onChange={handleChange}
                                   placeholder="Enter your price"
                                   value={state.price}
@@ -275,30 +415,54 @@ export default function id() {
                                     height: 40,
                                     marginBottom: 20,
                                     borderRadius: 5,
-                                    padding: 5,
+                                    padding: 12,
                                     background: "#353840",
                                     outline: "none"
                                   }}
                                 />
-                                <button className="btn btn-info w-full gap-2">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                                      clipRule="evenodd"
+                                {isSellBtnLoading ? (
+                                  <button className="btn btn-info btn-disabled opacity-50 w-full gap-5">
+                                    <FontAwesomeIcon
+                                      icon={faSpinner}
+                                      className="fa-spinner"
                                     />
-                                  </svg>
-                                  <span
-                                    className="font-sans"
-                                    onClick={resellNFT}>
-                                    Sell
-                                  </span>
-                                </button>
+                                    <span className="flex items-center gap-2">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-5 w-5"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
+                                      <span className="font-sans">Sell</span>
+                                    </span>
+                                  </button>
+                                ) : (
+                                  <button className="btn btn-info w-full gap-2">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="h-5 w-5"
+                                      viewBox="0 0 20 20"
+                                      fill="currentColor">
+                                      <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                    <span
+                                      className="font-sans"
+                                      onClick={resellNFT}>
+                                      Sell
+                                    </span>
+                                  </button>
+                                )}
                               </div>
                             </div>
                           </label>
@@ -320,6 +484,28 @@ export default function id() {
                         </svg>
                         <span className="font-sans">Buy now</span>
                       </button>
+                    ) : isBuyBtnLoading ? (
+                      <button className="btn btn-info btn-disabled opacity-50 btn-wide gap-5">
+                        <FontAwesomeIcon
+                          icon={faSpinner}
+                          className="fa-spinner"
+                        />
+                        <span className="flex items-center gap-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span className="font-sans">Buy now</span>
+                        </span>
+                      </button>
                     ) : (
                       <button className="btn btn-info btn-wide gap-2 ">
                         <svg
@@ -339,6 +525,15 @@ export default function id() {
                         </span>
                       </button>
                     )}
+                    <Link
+                      href={`https://mumbai.polygonscan.com/token/0xf6f7e99c57d797215730fd5b41c86a2372bab463?a=${nft.tokenId}`}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400">
+                        View transactions
+                      </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -346,6 +541,46 @@ export default function id() {
           </div>
         </div>
       </div>
+      {/* <div className="mt-5">
+        <div
+          tabindex="0"
+          className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-lg">
+          <input type="checkbox" className="peer" />
+          <div className="collapse-title text-xl font-medium bg-gray-700">
+            Item Activity
+          </div>
+          <div className="collapse-content flex flex-col">
+            <div className="overflow-x-auto">
+              <table className="table w-full mt-3">
+                <thead>
+                  <tr>
+                    <th>Event</th>
+                    <th>Price</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hasItemActivity && (
+                    // txs?.map(txn => (
+                    //   <tr>
+                    //     <th>1</th>
+                    //     <td>Cy Ganderton</td>
+                    //     <td>{txn.from}</td>
+                    //     <td>{txn.to}</td>
+                    //     <td>Blue</td>
+                    //   </tr>
+                    // ))
+                    <FontAwesomeIcon icon={faSpinner} className="fa-spinner" />
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> */}
+      <ToastContainer />
     </main>
   );
 }

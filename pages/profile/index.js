@@ -23,36 +23,8 @@ const Profile = props => {
    * The function loads the NFTs from the contract and then uses the tokenURI function to get the
    * metadata from the tokenURI and then sets the state of the NFTs to the items array.
    */
-  async function loadMyNFTs() {
-    // Array Items
-    setIsLoading(true);
-    try {
-      const data = await contract.fetchMyNFTs();
-      const items = await Promise.all(
-        data?.map(async i => {
-          const tokenUri = await contract.tokenURI(i.tokenId);
-          const meta = await axios.get(tokenUri);
-          let price = ethers.utils.formatUnits(i.price.toString(), "ether");
-          let item = {
-            price,
-            tokenId: i.tokenId.toNumber(),
-            seller: i.seller,
-            owner: i.owner,
-            image: meta.data.image,
-            name: meta.data.name,
-            description: meta.data.description
-          };
-          return item;
-        })
-      );
-      setNfts(items);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
-  async function loadMyCreatedNFTs() {
+  async function loadMyCollectedNFTs() {
     // Array Items
     setIsLoading(true);
     try {
@@ -81,7 +53,7 @@ const Profile = props => {
     }
   }
 
-  async function loadMysellingNFTs() {
+  async function loadMySellingNFTs() {
     // Array Items
     setIsLoading(true);
     try {
@@ -112,13 +84,10 @@ const Profile = props => {
 
   useEffect(() => {
     if (openTab === 1) {
-      loadMyCreatedNFTs();
+      loadMyCollectedNFTs();
     }
     if (openTab === 2) {
-      loadMysellingNFTs();
-    }
-    if (openTab === 3) {
-      loadMyNFTs();
+      loadMySellingNFTs();
     }
   }, [contract, openTab]);
 
@@ -127,7 +96,7 @@ const Profile = props => {
   console.log({ sellingNfts });
 
   return (
-    <main className="container mx-auto my-10">
+    <main className="container xl:px-20 lg:px-20 my-10">
       <h1 className="text-5xl font-bold mb-10">My NFTs</h1>
       <div className="flex flex-wrap">
         <div className="w-full">
@@ -170,24 +139,6 @@ const Profile = props => {
                 Selling
               </a>
             </li>
-            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-              <a
-                className={
-                  "text-l font-semibold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                  (openTab === 3
-                    ? "text-white border-b-4 border-b-blue-600"
-                    : "text-gray-400 bg-base-100")
-                }
-                onClick={e => {
-                  e.preventDefault();
-                  setOpenTab(3);
-                }}
-                data-toggle="tab"
-                href="#created"
-                role="tablist">
-                Created
-              </a>
-            </li>
           </ul>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded">
             <div className="px-4 py-5 flex-auto">
@@ -210,7 +161,7 @@ const Profile = props => {
                           nft.owner === info?.address && (
                             <div
                               key={nft.tokenId}
-                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10 cursor-pointer">
                               <Link
                                 href={{
                                   pathname: `/detail/${index}`,
@@ -255,7 +206,7 @@ const Profile = props => {
                           nft.seller === info?.address && (
                             <div
                               key={nft.tokenId}
-                              className="card card-compact bg-base-100 shadow-xl md:mb-10">
+                              className="card card-compact bg-base-100 shadow-xl md:mb-10 cursor-pointer">
                               <Link
                                 href={{
                                   pathname: `/detail/${index}`,
@@ -279,43 +230,6 @@ const Profile = props => {
                             </div>
                           )
                       )
-                    )}
-                  </div>
-                </div>
-                <div
-                  className={openTab === 3 ? "block" : "hidden"}
-                  id="created">
-                  <div className="lg:grid lg:grid-cols-4 lg:gap-4 md:flex md:flex-col">
-                    {isLoading ? (
-                      <h3>Loading...</h3>
-                    ) : !nfts.length ? (
-                      <h1 className="text-5xl font-bold mb-10">
-                        Create some NFTs :)
-                      </h1>
-                    ) : (
-                      nfts?.map((nft, index) => (
-                        <div
-                          key={nft.tokenId}
-                          className="card card-compact bg-base-100 shadow-xl md:mb-10">
-                          <Link
-                            href={{
-                              pathname: `/detail/${index}`,
-                              query: nft
-                            }}>
-                            <div>
-                              <img
-                                src={nft.image}
-                                alt="Shoes"
-                                className="w-full md:w-full h-40 object-contain"
-                              />
-                            </div>
-                          </Link>
-                          <div className="card-body">
-                            <h2 className="card-title">{nft?.name}</h2>
-                            <p>{nft?.description}</p>
-                          </div>
-                        </div>
-                      ))
                     )}
                   </div>
                 </div>

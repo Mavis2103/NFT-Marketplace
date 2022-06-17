@@ -234,7 +234,11 @@ const ModalBox = ({ originImg, apply }) => {
                 </div>
                 {state.isLoading ? (
                   <div className="flex justify-center items-center">
-                    <FontAwesomeIcon icon={faSpinner} size="10x" spin />
+                    <FontAwesomeIcon
+                      icon={faSpinner}
+                      size="10x"
+                      className="fa-spinner"
+                    />
                   </div>
                 ) : state.editedImg ? (
                   <div className="flex flex-col items-center">
