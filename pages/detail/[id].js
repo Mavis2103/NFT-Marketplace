@@ -123,7 +123,7 @@ export default function id() {
           "https://rest.coinapi.io/v1/exchangerate/MATIC/USD",
           {
             headers: {
-              "X-CoinAPI-Key": "93987AA6-BC15-46B5-B818-E475AE736104"
+              "X-CoinAPI-Key": "04444A03-A581-455F-B08B-CBC1A2A57EB2"
             }
           }
         );
