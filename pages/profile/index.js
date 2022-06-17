@@ -98,6 +98,9 @@ const Profile = props => {
   return (
     <main className="container xl:px-20 lg:px-20 my-10">
       <h1 className="text-5xl font-bold mb-10">My NFTs</h1>
+      <p className="text-xl font-bold mb-10">
+        Balance: {Number(info?.balance).toFixed(4)} MATIC
+      </p>
       <div className="flex flex-wrap">
         <div className="w-full">
           <ul
