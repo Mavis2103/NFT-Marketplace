@@ -85,7 +85,7 @@ export default function Create() {
     }
   }
 
-  // IMAGE PROCESSINGGG
+  // IMAGE PROCESSINGGGGGG
   let urlRegex = /(https?:\/\/[^\s]+)/;
   const applyChanges = editedImg => {
     setState({ editedImg: editedImg });
