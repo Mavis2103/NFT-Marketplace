@@ -443,7 +443,9 @@ export default function id() {
                                     </span>
                                   </button>
                                 ) : (
-                                  <button className="btn btn-info w-full gap-2">
+                                  <button
+                                    className="btn btn-info w-full gap-2"
+                                    onClick={resellNFT}>
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       className="h-5 w-5"
@@ -456,11 +458,7 @@ export default function id() {
                                         clipRule="evenodd"
                                       />
                                     </svg>
-                                    <span
-                                      className="font-sans"
-                                      onClick={resellNFT}>
-                                      Sell
-                                    </span>
+                                    <span className="font-sans">Sell</span>
                                   </button>
                                 )}
                               </div>
@@ -507,7 +505,9 @@ export default function id() {
                         </span>
                       </button>
                     ) : (
-                      <button className="btn btn-info btn-wide gap-2 ">
+                      <button
+                        className="btn btn-info btn-wide gap-2 "
+                        onClick={buyNFT}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5"
@@ -520,9 +520,7 @@ export default function id() {
                             clipRule="evenodd"
                           />
                         </svg>
-                        <span className="font-sans" onClick={buyNFT}>
-                          Buy now
-                        </span>
+                        <span className="font-sans">Buy now</span>
                       </button>
                     )}
                     <Link
